@@ -150,7 +150,7 @@ const switchAccount = (accountType) => {
         demoTab.classList.remove('active-tab', 'demo-tab');
         realTab.setAttribute('aria-selected', 'true');
         demoTab.setAttribute('aria-selected', 'false');
-    } else {
+    } else if (accountType === 'demo') {
         demoTab.classList.add('active-tab', 'demo-tab');
         realTab.classList.remove('active-tab', 'real-tab');
         demoTab.setAttribute('aria-selected', 'true');
