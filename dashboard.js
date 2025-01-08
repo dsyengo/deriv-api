@@ -11,6 +11,36 @@ let ws;
 let heartbeatInterval;
 const HEARTBEAT_INTERVAL = 30000;
 
+
+window.onload = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token1');
+    const redirect_uri = encodeURIComponent(window.location.origin + '/dashboard.html');
+
+    if (token) {
+        // Store the token in localStorage
+        localStorage.setItem('deriv_token', token);
+
+        // Redirect the user to the dashboard (without the token in the URL)
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Authorize the user using the token
+        authorize(token);
+    } else {
+        // Check if the token is already stored
+        const storedToken = localStorage.getItem('deriv_token');
+        if (storedToken) {
+            // If the token is stored, use it to authorize the user
+            authorize(storedToken);
+        } else {
+            console.error('Token is missing. Please log in.');
+            // Redirect the user to the login page if no token is available
+            window.location.href = `https://oauth.deriv.com/oauth2/authorize?app_id=${app_id}&scope=read&redirect_uri=${redirect_uri}`;
+        }
+    }
+};
+
+
 // Initialize WebSocket connection
 const connectWebSocket = () => {
     ws = new WebSocket(`wss://ws.binaryws.com/websockets/v3?app_id=${app_id}`);
@@ -66,7 +96,7 @@ const handleApiResponse = (response) => {
 
     if (response.msg_type === 'authorize') {
         console.log('Authorization successful.');
-        const accountType = document.getElementById('account-type').value;
+        const accountType = response.echo_req.account_type || 'real';
         getBalanceForAccount(accountType);
     } else if (response.msg_type === 'balance') {
         if (response.balance) {
@@ -116,31 +146,5 @@ const getBalanceForAccount = (accountType) => {
 
 // Capitalize First Letter
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
-
-// Handle Account Switching
-document.getElementById('account-type').addEventListener('change', (event) => {
-    const selectedAccount = event.target.value;
-    console.log('Account type switched to:', selectedAccount);
-    getBalanceForAccount(selectedAccount);
-});
-
-// Handle Token Retrieval on Page Load
-window.onload = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token1');
-    const redirect_uri = encodeURIComponent(window.location.origin + '/dashboard.html');
-
-    if (token) {
-        localStorage.setItem('deriv_token', token);
-        window.history.replaceState({}, document.title, window.location.pathname);
-        authorize(token);
-    } else {
-        const storedToken = localStorage.getItem('deriv_token');
-        if (!storedToken) {
-            console.error('No token found. Redirecting to login.');
-            window.location.href = `https://oauth.deriv.com/oauth2/authorize?app_id=${app_id}&scope=read&redirect_uri=${redirect_uri}`;
-        }
-    }
-};
 
 connectWebSocket();
