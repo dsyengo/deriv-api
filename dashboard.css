@@ -13,7 +13,7 @@ body {
   background: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  position: relative; /* Allows absolute positioning inside */
+  position: relative; /* Needed for absolute positioning of buttons */
 }
 
 header {
@@ -130,21 +130,20 @@ footer {
 }
 
 /* Positioning the Buttons */
-.logout-section,
-.redirect-section {
+.logout-section {
   position: absolute;
   top: 20px;
   right: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  z-index: 10; /* Ensure buttons appear above other content */
+  z-index: 100; /* Ensure it stays above other content */
 }
 
-.logout-btn {
-  background-color: #dc3545; /* Red for Log Out button */
+.redirect-section {
+  margin-top: 30px; /* Adds space between the balance card and the button */
+  text-align: center;
 }
 
 .trade-btn {
   background-color: #28a745; /* Green for Go to Trading button */
+  width: 200px; /* Set width for consistency */
+  margin-top: 20px; /* Space from balance card */
 }
