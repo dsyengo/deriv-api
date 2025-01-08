@@ -13,6 +13,7 @@ body {
   background: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  position: relative; /* Allows absolute positioning inside */
 }
 
 header {
@@ -115,8 +116,6 @@ footer {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 100%;
-  margin-top: 20px;
   transition: background-color 0.3s;
 }
 
@@ -128,4 +127,24 @@ footer {
 .logout-btn:active,
 .trade-btn:active {
   background-color: #003f75;
+}
+
+/* Positioning the Buttons */
+.logout-section,
+.redirect-section {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10; /* Ensure buttons appear above other content */
+}
+
+.logout-btn {
+  background-color: #dc3545; /* Red for Log Out button */
+}
+
+.trade-btn {
+  background-color: #28a745; /* Green for Go to Trading button */
 }
