@@ -57,8 +57,7 @@ const authorize = (token) => {
     ws.send(JSON.stringify(authRequest));
 };
 
-// Call connectWebSocket to initiate the connection
-connectWebSocket();
+
 
 // Check for token in URL after redirection
 window.onload = () => {
@@ -78,20 +77,15 @@ window.onload = () => {
     }
 };
 
-//Display Account Balances
-const getBalanceForAccount = (accountType) => {
-    const balanceRequest = {
-        balance: 1,
-    };
-    ws.send(JSON.stringify(balanceRequest));
-};
+
 
 const handleApiResponse = (response) => {
     console.log('Handling response:', response); // Log the response being handled
 
     if (response.msg_type === 'authorize') {
         console.log('Authorization successful:', response);
-        getBalanceForAccount('real'); // Fetch balance for the default account type
+        // Fetch balance for the default account type after successful authorization
+        getBalanceForAccount('real'); // You can also fetch 'demo' if needed
     } else if (response.msg_type === 'balance') {
         // Check if response.balance is defined
         if (!response.balance) {
@@ -115,10 +109,27 @@ const handleApiResponse = (response) => {
     } else if (response.error) {
         // Handle any errors returned in the response
         console.error('Error fetching balance:', response.error);
+        if (response.error.code === "AuthorizationRequired") {
+            console.warn('User  is not authorized. Please log in.');
+            // Optionally, you can redirect the user to the login page or show a message
+        }
     } else {
         console.warn('Unexpected message type:', response.msg_type);
     }
 };
+
+// Fetch and Display Account Balances
+const getBalanceForAccount = (accountType) => {
+    const balanceRequest = {
+        balance: 1,
+        // account_type: accountType // This line should be removed based on previous error
+    };
+    console.log('Sending balance request for:', accountType); // Log the request
+    ws.send(JSON.stringify(balanceRequest));
+};
+
+// Call connectWebSocket to initiate the connection
+connectWebSocket();
 
 // Capitalize the first letter of a string
 const capitalizeFirstLetter = (string) => {
