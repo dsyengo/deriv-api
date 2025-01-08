@@ -1,10 +1,9 @@
-
-// WebSocket Connection
 const app_id = '67110';
 let ws; // Declare ws variable in a broader scope
 let heartbeatInterval; // Variable to hold the heartbeat interval
 const HEARTBEAT_INTERVAL = 30000; // 30 seconds
 
+// WebSocket Connection
 const connectWebSocket = () => {
     ws = new WebSocket(`wss://ws.binaryws.com/websockets/v3?app_id=${app_id}`);
 
@@ -35,7 +34,6 @@ const connectWebSocket = () => {
     };
 };
 
-
 // Start sending heartbeat messages
 const startHeartbeat = () => {
     heartbeatInterval = setInterval(() => {
@@ -51,25 +49,26 @@ const stopHeartbeat = () => {
     clearInterval(heartbeatInterval);
 };
 
-// Fetch and Display Account Balances
+// Authorize the user
 const authorize = (token) => {
-    const authRequest = {
-        authorize: token,
-    };
-    ws.send(JSON.stringify(authRequest));
+    if (ws.readyState === WebSocket.OPEN) {
+        const authRequest = {
+            authorize: token,
+        };
+        ws.send(JSON.stringify(authRequest));
+        console.log('Sent authorization request');
+    } else {
+        console.log('WebSocket not open yet');
+    }
 };
 
-
-
-
-
+// Handle WebSocket response messages
 const handleApiResponse = (response) => {
     console.log('Handling response:', response); // Log the response being handled
 
     if (response.msg_type === 'authorize') {
         console.log('Authorization successful:', response);
-        // Fetch balance for the default account type after successful authorization
-        getBalanceForAccount('real'); // You can also fetch 'demo' if needed
+        getBalanceForAccount('real'); // Fetch balance for the default account type
     } else if (response.msg_type === 'balance') {
         // Check if response.balance is defined
         if (!response.balance) {
@@ -94,7 +93,7 @@ const handleApiResponse = (response) => {
         // Handle any errors returned in the response
         console.error('Error fetching balance:', response.error);
         if (response.error.code === "AuthorizationRequired") {
-            console.warn('User  is not authorized. Please log in.');
+            console.warn('User is not authorized. Please log in.');
             // Optionally, you can redirect the user to the login page or show a message
         }
     } else {
@@ -104,11 +103,15 @@ const handleApiResponse = (response) => {
 
 // Fetch and Display Account Balances
 const getBalanceForAccount = (accountType) => {
-    const balanceRequest = {
-        balance: 1,
-    };
-    console.log('Sending balance request for:', accountType); // Log the request
-    ws.send(JSON.stringify(balanceRequest));
+    if (ws.readyState === WebSocket.OPEN) {
+        const balanceRequest = {
+            balance: 1,
+        };
+        console.log('Sending balance request for:', accountType); // Log the request
+        ws.send(JSON.stringify(balanceRequest));
+    } else {
+        console.log('WebSocket not open yet');
+    }
 };
 
 // Call connectWebSocket to initiate the connection
@@ -128,6 +131,10 @@ window.onload = () => {
         const storedToken = localStorage.getItem('deriv_token');
         if (storedToken) {
             authorize(storedToken);
+        } else {
+            console.error('Token is missing. Please log in.');
+            // Optionally redirect to login page if no token
+            window.location.href = '/login'; // Redirect to login page
         }
     }
 };
