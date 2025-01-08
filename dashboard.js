@@ -173,13 +173,18 @@ logoutBtn.addEventListener('click', () => {
 tradeBtn.addEventListener('click', () => {
     const token = localStorage.getItem('deriv_token'); // Retrieve token from localStorage
 
-    if (token) {
-        // Redirect to the trading site with the token
-        window.location.href = `https://app.deriv.com/dtrader?chart_type=area&interval=1t&symbol=1HZ100V&trade_type=accumulator&token=${token}`;
-    } else {
-        // Notify the user to log in
-        alert('You are not logged in. Please log in first.');
-    }
+    const authorizeAndRedirect = (token) => {
+        ws.onmessage = (message) => {
+            const response = JSON.parse(message.data);
+            if (response.msg_type === 'authorize') {
+                // Redirect after successful authorization
+                window.location.href = `https://app.deriv.com/dtrader?token=${token}`;
+            } else {
+                alert('Authorization failed. Please log in again.');
+            }
+        };
+        ws.send(JSON.stringify({ authorize: token }));
+    };
 });
 
 connectWebSocket();
