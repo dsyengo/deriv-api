@@ -147,4 +147,33 @@ const getBalanceForAccount = (accountType) => {
 // Capitalize First Letter
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
+// Handle Tab Switching (Added)
+realTab.addEventListener('click', () => {
+    switchAccount('real');
+});
+
+demoTab.addEventListener('click', () => {
+    switchAccount('demo');
+});
+
+// Switch Account Based on Tab Click
+const switchAccount = (accountType) => {
+    // Set active tab
+    if (accountType === 'real') {
+        realTab.classList.add('active-tab', 'real-tab');
+        demoTab.classList.remove('active-tab', 'demo-tab');
+        realTab.setAttribute('aria-selected', 'true');
+        demoTab.setAttribute('aria-selected', 'false');
+    } else {
+        demoTab.classList.add('active-tab', 'demo-tab');
+        realTab.classList.remove('active-tab', 'real-tab');
+        demoTab.setAttribute('aria-selected', 'true');
+        realTab.setAttribute('aria-selected', 'false');
+    }
+
+    // Fetch the balance for the selected account type
+    getBalanceForAccount(accountType);
+};
+
+
 connectWebSocket();
