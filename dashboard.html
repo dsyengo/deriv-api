@@ -1,41 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deriv Account Dashboard</title>
-  <link rel="stylesheet" href="./dashboard.css" />
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>Deriv Account Dashboard</h1>
-      <p>Manage your real and demo account balances</p>
-    </header>
-    <main>
-      <div class="account-switch">
-        <label for="account-type">Switch Account:</label>
-        <select id="account-type">
-          <option value="real">Real Account</option>
-          <option value="demo">Demo Account</option>
-        </select>
-      </div>
-      <div class="balance-card" id="balance-card">
-        <h2 id="account-title">Real Account</h2>
-        <p id="account-balance">Balance: --</p>
-        <p id="account-currency">Currency: --</p>
-      </div>
-      <div class="transaction-history">
-        <h2>Transaction History</h2>
-        <ul id="transaction-list">
-          <!-- Transaction items will be dynamically added here -->
-        </ul>
-      </div>
-    </main>
-    <footer>
-      <p>Powered by Deriv API</p>
-    </footer>
-  </div>
-  <script src="./dashboard.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deriv Account Dashboard</title>
+    <link rel="stylesheet" href="./dashboard.css" />
+    <style>
+      .real-tab {
+        color: green;
+      }
+      .demo-tab {
+        color: blue;
+      }
+      .real-text {
+        color: green;
+      }
+      .demo-text {
+        color: blue;
+      }
+      .active-tab {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Deriv Account Dashboard</h1>
+        <p>Manage your real and demo account balances</p>
+      </header>
+      <main>
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+          <button id="real-tab" class="tab active-tab">Real Account</button>
+          <button id="demo-tab" class="tab">Demo Account</button>
+        </div>
+        <!-- Account Details -->
+        <div class="balance-card" id="balance-card">
+          <h2 id="account-title">Real Account</h2>
+          <p id="account-balance" class="real-text">Balance: --</p>
+          <p id="account-currency" class="real-text">Currency: --</p>
+        </div>
+        <!-- Transaction History -->
+        <div class="transaction-history">
+          <h2>Transaction History</h2>
+          <ul id="transaction-list">
+            <!-- Transaction items will be dynamically added here -->
+          </ul>
+        </div>
+      </main>
+      <footer>
+        <p>Powered by Deriv API</p>
+      </footer>
+      <script src="./dashboard.js"></script>
+    </div>
+  </body>
 </html>
