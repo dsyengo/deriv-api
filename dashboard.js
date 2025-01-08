@@ -73,7 +73,7 @@ const handleApiResponse = (response) => {
             const { balance, currency } = response.balance;
             const accountType = response.echo_req.account_type || 'real';
 
-            // Update UI with fetched data
+            // Update UI
             accountTitle.textContent = `${capitalizeFirstLetter(accountType)} Account`;
             accountBalance.textContent = `Balance: ${balance}`;
             accountCurrency.textContent = `Currency: ${currency}`;
@@ -86,9 +86,13 @@ const handleApiResponse = (response) => {
             if (accountType === 'real') {
                 realTab.classList.add('active-tab', 'real-tab');
                 demoTab.classList.remove('active-tab', 'demo-tab');
+                realTab.setAttribute('aria-selected', 'true');
+                demoTab.setAttribute('aria-selected', 'false');
             } else {
                 demoTab.classList.add('active-tab', 'demo-tab');
                 realTab.classList.remove('active-tab', 'real-tab');
+                demoTab.setAttribute('aria-selected', 'true');
+                realTab.setAttribute('aria-selected', 'false');
             }
 
             // Log transaction
@@ -118,16 +122,6 @@ document.getElementById('account-type').addEventListener('change', (event) => {
     const selectedAccount = event.target.value;
     console.log('Account type switched to:', selectedAccount);
     getBalanceForAccount(selectedAccount);
-});
-
-// Handle Tab Click for Real Account
-realTab.addEventListener('click', () => {
-    getBalanceForAccount('real');
-});
-
-// Handle Tab Click for Demo Account
-demoTab.addEventListener('click', () => {
-    getBalanceForAccount('demo');
 });
 
 // Handle Token Retrieval on Page Load

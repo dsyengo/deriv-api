@@ -5,23 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Deriv Account Dashboard</title>
     <link rel="stylesheet" href="./dashboard.css" />
-    <style>
-      .real-tab {
-        color: green;
-      }
-      .demo-tab {
-        color: blue;
-      }
-      .real-text {
-        color: green;
-      }
-      .demo-text {
-        color: blue;
-      }
-      .active-tab {
-        font-weight: bold;
-      }
-    </style>
   </head>
   <body>
     <div class="container">
@@ -32,14 +15,18 @@
       <main>
         <!-- Tab Navigation -->
         <div class="tab-navigation">
-          <button id="real-tab" class="tab active-tab">Real Account</button>
-          <button id="demo-tab" class="tab">Demo Account</button>
+          <button id="real-tab" class="tab active-tab" aria-selected="true">
+            Real Account
+          </button>
+          <button id="demo-tab" class="tab" aria-selected="false">
+            Demo Account
+          </button>
         </div>
         <!-- Account Details -->
         <div class="balance-card" id="balance-card">
           <h2 id="account-title">Real Account</h2>
-          <p id="account-balance" class="real-text">Balance: --</p>
-          <p id="account-currency" class="real-text">Currency: --</p>
+          <p id="account-balance" class="real-text">Balance: Loading...</p>
+          <p id="account-currency" class="real-text">Currency: Loading...</p>
         </div>
         <!-- Transaction History -->
         <div class="transaction-history">
@@ -52,7 +39,7 @@
       <footer>
         <p>Powered by Deriv API</p>
       </footer>
-      <script src="./dashboard.js"></script>
     </div>
+    <script src="./dashboard.js"></script>
   </body>
 </html>
