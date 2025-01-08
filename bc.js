@@ -12,7 +12,6 @@ const connectWebSocket = () => {
     ws.onopen = () => {
         console.log('Connected to Deriv API');
         const storedToken = localStorage.getItem('deriv_token');
-        console.log('Stored token:', storedToken); // Log the stored token
         if (storedToken) {
             authorize(storedToken);
         }
@@ -34,7 +33,6 @@ const connectWebSocket = () => {
         console.error('WebSocket Error:', error);
     };
 };
-
 
 // Start sending heartbeat messages
 const startHeartbeat = () => {
@@ -60,6 +58,24 @@ const authorize = (token) => {
 };
 
 
+
+// Check for token in URL after redirection
+window.onload = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
+    if (token) {
+        localStorage.setItem('deriv_token', token); // Store token locally
+        authorize(token); // Authorize user
+        window.history.replaceState({}, document.title, window.location.pathname); // Remove token from URL
+    } else {
+        // Check if token is already stored
+        const storedToken = localStorage.getItem('deriv_token');
+        if (storedToken) {
+            authorize(storedToken);
+        }
+    }
+};
 
 
 
@@ -106,6 +122,7 @@ const handleApiResponse = (response) => {
 const getBalanceForAccount = (accountType) => {
     const balanceRequest = {
         balance: 1,
+        // account_type: accountType // This line should be removed based on previous error
     };
     console.log('Sending balance request for:', accountType); // Log the request
     ws.send(JSON.stringify(balanceRequest));
@@ -113,24 +130,6 @@ const getBalanceForAccount = (accountType) => {
 
 // Call connectWebSocket to initiate the connection
 connectWebSocket();
-
-// Check for token in URL after redirection
-window.onload = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-
-    if (token) {
-        localStorage.setItem('deriv_token', token); // Store token locally
-        authorize(token); // Authorize user
-        window.history.replaceState({}, document.title, window.location.pathname); // Remove token from URL
-    } else {
-        // Check if token is already stored
-        const storedToken = localStorage.getItem('deriv_token');
-        if (storedToken) {
-            authorize(storedToken);
-        }
-    }
-};
 
 // Capitalize the first letter of a string
 const capitalizeFirstLetter = (string) => {
