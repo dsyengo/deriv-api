@@ -174,7 +174,7 @@ tradeBtn.addEventListener('click', () => {
     const token = localStorage.getItem('deriv_token');
     if (token) {
         // Redirect to trading site with token in URL
-        window.location.href = `https://app.deriv.com/dtrader?chart_type=area&interval=1t&symbol=1HZ100V&trade_type=accumulator&token1=${token}`
+        window.location.href = `https://app.deriv.com/dtrader?chart_type=area&interval=1t&symbol=1HZ100V&trade_type=accumulator`
 
     } else {
         alert('You are not logged in. Please log in first.');
