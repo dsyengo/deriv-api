@@ -142,7 +142,6 @@ const getBalanceForAccount = (accountType) => {
     if (ws.readyState === WebSocket.OPEN) {
         const balanceRequest = {
             balance: 1,
-            account_type: accountType,
         };
         console.log('Sending balance request for:', accountType); // Log the request
         ws.send(JSON.stringify(balanceRequest));
