@@ -125,7 +125,7 @@ window.onload = () => {
     if (token) {
         localStorage.setItem('deriv_token', token); // Store token locally
         authorize(token); // Authorize user
-        window.history.replaceState({}, document.title, window.location.pathname); // Remove token from URL
+        //  window.history.replaceState({}, document.title, window.location.pathname); // Remove token from URL
     } else {
         // Check if token is already stored
         const storedToken = localStorage.getItem('deriv_token');
@@ -134,7 +134,7 @@ window.onload = () => {
         } else {
             console.error('Token is missing. Please log in.');
             // Optionally redirect to login page if no token
-            window.location.href = '/login'; // Redirect to login page
+            window.location.href = '/login.html'; // Redirect to login page
         }
     }
 };
