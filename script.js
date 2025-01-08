@@ -4,7 +4,12 @@ const ws = new WebSocket(`wss://ws.binaryws.com/websockets/v3?app_id=${app_id}`)
 
 ws.onopen = () => {
     console.log('Connected to Deriv API');
+    const storedToken = localStorage.getItem('deriv_token');
+    if (storedToken) {
+        authorize(storedToken);
+    }
 };
+
 
 ws.onclose = () => {
     console.log('Disconnected from Deriv API');
@@ -32,11 +37,20 @@ document.getElementById('login-btn').addEventListener('click', () => {
 window.onload = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
+
     if (token) {
-        localStorage.setItem('deriv_token', token);
-        authorize(token);
+        localStorage.setItem('deriv_token', token); // Store token locally
+        authorize(token); // Authorize user
+        window.history.replaceState({}, document.title, window.location.pathname); // Remove token from URL
+    } else {
+        // Check if token is already stored
+        const storedToken = localStorage.getItem('deriv_token');
+        if (storedToken) {
+            authorize(storedToken);
+        }
     }
 };
+
 
 
 //Fetch and Display Account Balances
@@ -59,7 +73,10 @@ const getBalance = () => {
 const handleApiResponse = (response) => {
     if (response.msg_type === 'authorize') {
         document.getElementById('login-btn').classList.add('hidden');
-        document.getElementById('balance-section').classList.remove('hidden');
+        const balanceSection = document.getElementById('balance-section');
+        if (balanceSection) {
+            balanceSection.classList.remove('hidden');
+        }
         getBalance();
     } else if (response.msg_type === 'balance') {
         const balance = response.balance.balance;
@@ -74,14 +91,19 @@ const handleApiResponse = (response) => {
 };
 
 
+
 // Handle Account Switching
 
-
 document.getElementById('account-type').addEventListener('change', (event) => {
-    const selectedAccount = event.target.value;
-    const setAccountRequest = {
-        set_account: selectedAccount === 'real' ? 'real' : 'virtual',
-    };
-    ws.send(JSON.stringify(setAccountRequest));
-    getBalance();
+    const selectedAccount = event.target.value === 'real' ? 'real' : 'virtual';
+    getBalanceForAccount(selectedAccount);
 });
+
+const getBalanceForAccount = (accountType) => {
+    const balanceRequest = {
+        balance: 1,
+        account_type: accountType,
+    };
+    ws.send(JSON.stringify(balanceRequest));
+};
+
