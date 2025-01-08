@@ -1,10 +1,9 @@
-
-// WebSocket Connection
 const app_id = '67110';
 let ws; // Declare ws variable in a broader scope
 let heartbeatInterval; // Variable to hold the heartbeat interval
 const HEARTBEAT_INTERVAL = 30000; // 30 seconds
 
+// WebSocket Connection
 const connectWebSocket = () => {
     ws = new WebSocket(`wss://ws.binaryws.com/websockets/v3?app_id=${app_id}`);
 
@@ -12,6 +11,7 @@ const connectWebSocket = () => {
     ws.onopen = () => {
         console.log('Connected to Deriv API');
         const storedToken = localStorage.getItem('deriv_token');
+        console.log('Stored token:', storedToken); // Log the stored token
         if (storedToken) {
             authorize(storedToken);
         }
@@ -38,7 +38,7 @@ const connectWebSocket = () => {
 const startHeartbeat = () => {
     heartbeatInterval = setInterval(() => {
         if (ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({ ping: true })); // Send a ping message
+            ws.send(JSON.stringify({ ping: 1 })); // Send a ping message
             console.log('Sent heartbeat ping');
         }
     }, HEARTBEAT_INTERVAL);
@@ -49,20 +49,12 @@ const stopHeartbeat = () => {
     clearInterval(heartbeatInterval);
 };
 
-// Fetch and Display Account Balances
-const authorize = (token) => {
-    const authRequest = {
-        authorize: token,
-    };
-    ws.send(JSON.stringify(authRequest));
-};
-
-
 
 // Check for token in URL after redirection
 window.onload = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
+    const redirect_uri = encodeURIComponent(window.location.href); // Define redirect_uri
 
     if (token) {
         localStorage.setItem('deriv_token', token); // Store token locally
@@ -73,19 +65,33 @@ window.onload = () => {
         const storedToken = localStorage.getItem('deriv_token');
         if (storedToken) {
             authorize(storedToken);
+        } else {
+            console.error('Token is missing. Please log in.');
+            // Redirect to login page if no token
+            window.location.href = `https://oauth.deriv.com/oauth2/authorize?app_id=${app_id}&scope=read&redirect_uri=${redirect_uri}`; // Redirect to login page
         }
     }
 };
 
 
+// Authorize the user
+const authorize = (token) => {
+    if (ws.readyState === WebSocket.OPEN) {
+        const authRequest = { authorize: token };
+        ws.send(JSON.stringify(authRequest));
+        console.log('Sent authorization request with token:', token);
+    } else {
+        console.log('WebSocket not open yet');
+    }
+};
 
+// Handle WebSocket response messages
 const handleApiResponse = (response) => {
     console.log('Handling response:', response); // Log the response being handled
 
     if (response.msg_type === 'authorize') {
         console.log('Authorization successful:', response);
-        // Fetch balance for the default account type after successful authorization
-        getBalanceForAccount('real'); // You can also fetch 'demo' if needed
+        getBalanceForAccount('real'); // Fetch balance for the default account type
     } else if (response.msg_type === 'balance') {
         // Check if response.balance is defined
         if (!response.balance) {
@@ -110,7 +116,7 @@ const handleApiResponse = (response) => {
         // Handle any errors returned in the response
         console.error('Error fetching balance:', response.error);
         if (response.error.code === "AuthorizationRequired") {
-            console.warn('User  is not authorized. Please log in.');
+            console.warn('User is not authorized. Please log in.');
             // Optionally, you can redirect the user to the login page or show a message
         }
     } else {
@@ -120,16 +126,20 @@ const handleApiResponse = (response) => {
 
 // Fetch and Display Account Balances
 const getBalanceForAccount = (accountType) => {
-    const balanceRequest = {
-        balance: 1,
-        // account_type: accountType // This line should be removed based on previous error
-    };
-    console.log('Sending balance request for:', accountType); // Log the request
-    ws.send(JSON.stringify(balanceRequest));
+    if (ws.readyState === WebSocket.OPEN) {
+        const balanceRequest = {
+            balance: 1,
+        };
+        console.log('Sending balance request for:', accountType); // Log the request
+        ws.send(JSON.stringify(balanceRequest));
+    } else {
+        console.log('WebSocket not open yet');
+    }
 };
 
 // Call connectWebSocket to initiate the connection
 connectWebSocket();
+
 
 // Capitalize the first letter of a string
 const capitalizeFirstLetter = (string) => {
