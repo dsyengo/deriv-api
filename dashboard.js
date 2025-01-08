@@ -40,7 +40,7 @@ const connectWebSocket = () => {
 const startHeartbeat = () => {
     heartbeatInterval = setInterval(() => {
         if (ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({ ping: true })); // Send a ping message
+            ws.send(JSON.stringify({ ping: 1 })); // Send a ping message
             console.log('Sent heartbeat ping');
         }
     }, HEARTBEAT_INTERVAL);
