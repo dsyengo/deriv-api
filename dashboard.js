@@ -118,14 +118,16 @@ const getBalanceForAccount = (accountType) => {
 connectWebSocket();
 
 // Check for token in URL after redirection
+// Check for token in URL after redirection
 window.onload = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
+    const redirect_uri = encodeURIComponent(window.location.href); // Define redirect_uri
 
     if (token) {
         localStorage.setItem('deriv_token', token); // Store token locally
         authorize(token); // Authorize user
-        //  window.history.replaceState({}, document.title, window.location.pathname); // Remove token from URL
+        window.history.replaceState({}, document.title, window.location.pathname); // Remove token from URL
     } else {
         // Check if token is already stored
         const storedToken = localStorage.getItem('deriv_token');
@@ -133,8 +135,8 @@ window.onload = () => {
             authorize(storedToken);
         } else {
             console.error('Token is missing. Please log in.');
-            // Optionally redirect to login page if no token
-            window.location.href = '/login.html'; // Redirect to login page
+            // Redirect to login page if no token
+            window.location.href = `https://oauth.deriv.com/oauth2/authorize?app_id=${app_id}&scope=read&redirect_uri=${redirect_uri}`; // Redirect to login page
         }
     }
 };
