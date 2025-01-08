@@ -171,12 +171,13 @@ logoutBtn.addEventListener('click', () => {
 
 // Redirect to Trading Site
 tradeBtn.addEventListener('click', () => {
-    const token = localStorage.getItem('deriv_token');
-    if (token) {
-        // Redirect to trading site with token in URL
-        window.location.href = `https://app.deriv.com/dtrader?chart_type=area&interval=1t&symbol=1HZ100V&trade_type=accumulator&token=${token}`;
+    const token = localStorage.getItem('deriv_token'); // Retrieve token from localStorage
 
+    if (token) {
+        // Redirect to the trading site with the token
+        window.location.href = `https://app.deriv.com/dtrader?chart_type=area&interval=1t&symbol=1HZ100V&trade_type=accumulator&token=${token}`;
     } else {
+        // Notify the user to log in
         alert('You are not logged in. Please log in first.');
     }
 });
