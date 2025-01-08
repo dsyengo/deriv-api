@@ -104,3 +104,28 @@ footer {
   margin-top: 20px;
   color: #777;
 }
+
+/* Buttons for logout and trading */
+.logout-btn,
+.trade-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+
+.logout-btn:hover,
+.trade-btn:hover {
+  background-color: #0056b3;
+}
+
+.logout-btn:active,
+.trade-btn:active {
+  background-color: #003f75;
+}

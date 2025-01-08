@@ -5,12 +5,13 @@ const accountTitle = document.getElementById('account-title');
 const accountBalance = document.getElementById('account-balance');
 const accountCurrency = document.getElementById('account-currency');
 const transactionList = document.getElementById('transaction-list');
+const logoutBtn = document.getElementById('logout-btn');
+const tradeBtn = document.getElementById('trade-btn');
 
 const app_id = '67110';
 let ws;
 let heartbeatInterval;
 const HEARTBEAT_INTERVAL = 30000;
-
 
 window.onload = () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -39,7 +40,6 @@ window.onload = () => {
         }
     }
 };
-
 
 // Initialize WebSocket connection
 const connectWebSocket = () => {
@@ -122,6 +122,7 @@ const handleApiResponse = (response) => {
         }
     };
 }
+
 // Fetch Account Balance
 const getBalanceForAccount = (accountType) => {
     if (ws.readyState === WebSocket.OPEN) {
@@ -133,7 +134,7 @@ const getBalanceForAccount = (accountType) => {
 // Capitalize First Letter
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
-// Handle Tab Switching (Added)
+// Handle Tab Switching
 realTab.addEventListener('click', () => {
     switchAccount('real');
 });
@@ -161,5 +162,22 @@ const switchAccount = (accountType) => {
     getBalanceForAccount(accountType);
 };
 
+// Log Out Functionality
+logoutBtn.addEventListener('click', () => {
+    // Clear token and redirect to login page
+    localStorage.removeItem('deriv_token');
+    window.location.href = 'https://oauth.deriv.com/oauth2/authorize?app_id=67110&scope=read&redirect_uri=' + encodeURIComponent(window.location.origin + '/dashboard.html');
+});
+
+// Redirect to Trading Site
+tradeBtn.addEventListener('click', () => {
+    const token = localStorage.getItem('deriv_token');
+    if (token) {
+        // Redirect to trading site with token in URL
+        window.location.href = `https://www.tradermathews.com/?chart_type=area&interval=1t&symbol=1HZ100V&trade_type=accumulator&token1=${token}`;
+    } else {
+        alert('You are not logged in. Please log in first.');
+    }
+});
 
 connectWebSocket();
