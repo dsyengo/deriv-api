@@ -145,10 +145,19 @@ const getBalanceForAccount = (accountType) => {
 };
 
 const handleApiResponse = (response) => {
+    console.log('Handling response:', response); // Log the response being handled
+
     if (response.msg_type === 'authorize') {
+        console.log('Authorization successful:', response);
         getBalanceForAccount('real'); // Fetch real account balance
         getBalanceForAccount('virtual'); // Fetch virtual account balance
     } else if (response.msg_type === 'balance') {
+        // Check if response.balance is defined
+        if (!response.balance) {
+            console.error('Balance response is undefined:', response);
+            return; // Exit the function if balance is not available
+        }
+
         const { balance, currency } = response.balance;
         const accountType = response.echo_req.account_type;
 
@@ -162,6 +171,11 @@ const handleApiResponse = (response) => {
         const transactionItem = document.createElement('li');
         transactionItem.textContent = `Fetched ${accountType} balance: ${balance} ${currency} on ${new Date().toLocaleString()}`;
         transactionList.appendChild(transactionItem);
+    } else if (response.error) {
+        // Handle any errors returned in the response
+        console.error('Error fetching balance:', response.error);
+    } else {
+        console.warn('Unexpected message type:', response.msg_type);
     }
 };
 
