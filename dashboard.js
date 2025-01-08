@@ -7,7 +7,7 @@ const HEARTBEAT_INTERVAL = 30000; // 30 seconds
 
 window.onload = () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
+    const token = urlParams.get('token1');
     const redirect_uri = encodeURIComponent(window.location.origin + '/dashboard.html');
 
     if (token) {
