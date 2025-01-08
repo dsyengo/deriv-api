@@ -173,18 +173,34 @@ logoutBtn.addEventListener('click', () => {
 tradeBtn.addEventListener('click', () => {
     const token = localStorage.getItem('deriv_token'); // Retrieve token from localStorage
 
+    if (!token) {
+        alert('You are not logged in. Please log in first.');
+        return;
+    }
+
     const authorizeAndRedirect = (token) => {
-        ws.onmessage = (message) => {
-            const response = JSON.parse(message.data);
-            if (response.msg_type === 'authorize') {
-                // Redirect after successful authorization
-                window.location.href = `https://app.deriv.com/dtrader?token=${token}`;
-            } else {
-                alert('Authorization failed. Please log in again.');
-            }
-        };
-        ws.send(JSON.stringify({ authorize: token }));
+        // Ensure the WebSocket connection is open before sending the request
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.onmessage = (message) => {
+                const response = JSON.parse(message.data);
+                if (response.msg_type === 'authorize') {
+                    // Redirect after successful authorization
+                    window.location.href = `https://app.deriv.com/dtrader?token=${token}`;
+                } else {
+                    alert('Authorization failed. Please log in again.');
+                }
+            };
+
+            // Send the authorize request
+            ws.send(JSON.stringify({ authorize: token }));
+        } else {
+            alert('WebSocket connection is not ready. Please try again.');
+        }
     };
+
+    // Call the function with the retrieved token
+    authorizeAndRedirect(token);
 });
+
 
 connectWebSocket();
