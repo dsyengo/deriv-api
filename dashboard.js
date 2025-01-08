@@ -139,7 +139,7 @@ const handleApiResponse = (response) => {
 // Fetch Account Balance
 const getBalanceForAccount = (accountType) => {
     if (ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({ balance: 1, account_type: accountType }));
+        ws.send(JSON.stringify({ balance: 1, }));
         console.log(`Balance request sent for ${accountType} account.`);
     }
 };
