@@ -112,10 +112,10 @@ const handleApiResponse = (response) => {
             accountBalance.className = colorClass;
             accountCurrency.className = colorClass;
 
-            // Log transaction
-            const transactionItem = document.createElement('li');
-            transactionItem.textContent = `Fetched ${accountType} balance: ${balance} ${currency} on ${new Date().toLocaleString()}`;
-            transactionList.appendChild(transactionItem);
+            // // Log transaction
+            // const transactionItem = document.createElement('li');
+            // transactionItem.textContent = `Fetched ${accountType} balance: ${balance} ${currency} on ${new Date().toLocaleString()}`;
+            // transactionList.appendChild(transactionItem);
         } else if (response.error) {
             console.error('Error:', response.error.message);
             alert(`Error: ${response.error.message}`);
@@ -174,7 +174,8 @@ tradeBtn.addEventListener('click', () => {
     const token = localStorage.getItem('deriv_token');
     if (token) {
         // Redirect to trading site with token in URL
-        window.location.href = `https://www.tradermathews.com/?chart_type=area&interval=1t&symbol=1HZ100V&trade_type=accumulator&token1=${token}`;
+        window.location.href = `https://app.deriv.com/dtrader?chart_type=area&interval=1t&symbol=1HZ100V&trade_type=accumulator&token1=${token}`
+
     } else {
         alert('You are not logged in. Please log in first.');
     }
