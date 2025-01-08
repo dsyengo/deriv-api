@@ -3,6 +3,37 @@ let ws; // Declare ws variable in a broader scope
 let heartbeatInterval; // Variable to hold the heartbeat interval
 const HEARTBEAT_INTERVAL = 30000; // 30 seconds
 
+
+
+window.onload = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const redirect_uri = encodeURIComponent(window.location.origin + '/dashboard.html');
+
+    if (token) {
+        // Store the token in localStorage
+        localStorage.setItem('deriv_token', token);
+
+        // Redirect the user to the dashboard (without the token in the URL)
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Authorize the user using the token
+        authorize(token);
+    } else {
+        // Check if the token is already stored
+        const storedToken = localStorage.getItem('deriv_token');
+        if (storedToken) {
+            // If the token is stored, use it to authorize the user
+            authorize(storedToken);
+        } else {
+            console.error('Token is missing. Please log in.');
+            // Redirect the user to the login page if no token is available
+            window.location.href = `https://oauth.deriv.com/oauth2/authorize?app_id=${app_id}&scope=read&redirect_uri=${redirect_uri}`;
+        }
+    }
+};
+
+
 // WebSocket Connection
 const connectWebSocket = () => {
     ws = new WebSocket(`wss://ws.binaryws.com/websockets/v3?app_id=${app_id}`);
@@ -50,28 +81,7 @@ const stopHeartbeat = () => {
 };
 
 
-// Check for token in URL after redirection
-window.onload = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-    const redirect_uri = encodeURIComponent(window.location.href); // Define redirect_uri
 
-    if (token) {
-        localStorage.setItem('deriv_token', token); // Store token locally
-        authorize(token); // Authorize user
-        window.history.replaceState({}, document.title, window.location.pathname); // Remove token from URL
-    } else {
-        // Check if token is already stored
-        const storedToken = localStorage.getItem('deriv_token');
-        if (storedToken) {
-            authorize(storedToken);
-        } else {
-            console.error('Token is missing. Please log in.');
-            // Redirect to login page if no token
-            window.location.href = `https://oauth.deriv.com/oauth2/authorize?app_id=${app_id}&scope=read&redirect_uri=${redirect_uri}`; // Redirect to login page
-        }
-    }
-};
 
 
 // Authorize the user
