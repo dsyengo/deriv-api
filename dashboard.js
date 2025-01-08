@@ -25,14 +25,6 @@ ws.onmessage = (message) => {
 };
 
 
-// OAuth Login
-
-
-document.getElementById('login-btn').addEventListener('click', () => {
-    const redirect_uri = encodeURIComponent(window.location.href);
-    window.location.href = `https://oauth.deriv.com/oauth2/authorize?app_id=${app_id}&scope=read&redirect_uri=${redirect_uri}`;
-});
-
 // Check for token in URL after redirection
 window.onload = () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -72,17 +64,11 @@ const getBalance = () => {
 
 const handleApiResponse = (response) => {
     if (response.msg_type === 'authorize') {
-        document.getElementById('login-btn').classList.add('hidden');
-        const balanceSection = document.getElementById('balance-section');
-        if (balanceSection) {
-            balanceSection.classList.remove('hidden');
-        }
-        getBalance();
+        getBalance('real');
+        getBalance('virtual');
     } else if (response.msg_type === 'balance') {
-        const balance = response.balance.balance;
-        const currency = response.balance.currency;
-        const accountType = response.echo_req.account_type || 'real';
-        if (accountType === 'real') {
+        const { balance, currency } = response.balance;
+        if (response.echo_req.account_type === 'real') {
             document.getElementById('real-balance').textContent = `Balance: ${balance} ${currency}`;
         } else {
             document.getElementById('demo-balance').textContent = `Balance: ${balance} ${currency}`;

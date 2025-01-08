@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deriv Account Dashboard</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Deriv Account Dashboard</h1>
+      <p>Manage your real and demo account balances</p>
+    </header>
+    <main>
+      <div class="balance-card">
+        <h2>Real Account</h2>
+        <p id="real-balance">Balance: --</p>
+      </div>
+      <div class="balance-card">
+        <h2>Demo Account</h2>
+        <p id="demo-balance">Balance: --</p>
+      </div>
+      <div class="account-switch">
+        <label for="account-type">Switch Account:</label>
+        <select id="account-type">
+          <option value="real">Real Account</option>
+          <option value="demo">Demo Account</option>
+        </select>
+      </div>
+    </main>
+    <footer>
+      <p>Powered by Deriv API</p>
+    </footer>
+  </div>
+  <script src="./dashboard.js"></script>
+</body>
+</html>
