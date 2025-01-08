@@ -101,7 +101,9 @@ const handleApiResponse = (response) => {
 
     if (response.msg_type === 'authorize') {
         console.log('Authorization successful:', response);
-        getBalanceForAccount('real'); // Fetch balance for the default account type
+        // Get balance for the selected account type
+        const selectedAccountType = document.getElementById('account-type').value;
+        getBalanceForAccount(selectedAccountType); // Fetch balance for the selected account type
     } else if (response.msg_type === 'balance') {
         // Check if response.balance is defined
         if (!response.balance) {
@@ -110,9 +112,9 @@ const handleApiResponse = (response) => {
         }
 
         const { balance, currency } = response.balance;
-        const accountType = response.echo_req.account_type || 'real'; // Default to 'real' if not set
+        const accountType = response.echo_req.account_type || 'real'; // Use account_type from the request
 
-        // Update the balance card
+        // Update the balance card dynamically based on the account type
         document.getElementById('account-title').textContent = `${capitalizeFirstLetter(accountType)} Account`;
         document.getElementById('account-balance').textContent = `Balance: ${balance}`;
         document.getElementById('account-currency').textContent = `Currency: ${currency}`;
@@ -134,11 +136,13 @@ const handleApiResponse = (response) => {
     }
 };
 
+
 // Fetch and Display Account Balances
 const getBalanceForAccount = (accountType) => {
     if (ws.readyState === WebSocket.OPEN) {
         const balanceRequest = {
             balance: 1,
+            account_type: accountType,
         };
         console.log('Sending balance request for:', accountType); // Log the request
         ws.send(JSON.stringify(balanceRequest));
