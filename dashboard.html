@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Deriv Account Dashboard</title>
-  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./dashboard.css" />
 </head>
 <body>
   <div class="container">
@@ -13,20 +13,23 @@
       <p>Manage your real and demo account balances</p>
     </header>
     <main>
-      <div class="balance-card">
-        <h2>Real Account</h2>
-        <p id="real-balance">Balance: --</p>
-      </div>
-      <div class="balance-card">
-        <h2>Demo Account</h2>
-        <p id="demo-balance">Balance: --</p>
-      </div>
       <div class="account-switch">
         <label for="account-type">Switch Account:</label>
         <select id="account-type">
           <option value="real">Real Account</option>
           <option value="demo">Demo Account</option>
         </select>
+      </div>
+      <div class="balance-card" id="balance-card">
+        <h2 id="account-title">Real Account</h2>
+        <p id="account-balance">Balance: --</p>
+        <p id="account-currency">Currency: --</p>
+      </div>
+      <div class="transaction-history">
+        <h2>Transaction History</h2>
+        <ul id="transaction-list">
+          <!-- Transaction items will be dynamically added here -->
+        </ul>
       </div>
     </main>
     <footer>
