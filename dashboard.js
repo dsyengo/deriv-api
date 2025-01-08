@@ -112,30 +112,16 @@ const handleApiResponse = (response) => {
             accountBalance.className = colorClass;
             accountCurrency.className = colorClass;
 
-            // Update tab styles
-            if (accountType === 'real') {
-                realTab.classList.add('active-tab', 'real-tab');
-                demoTab.classList.remove('active-tab', 'demo-tab');
-                realTab.setAttribute('aria-selected', 'true');
-                demoTab.setAttribute('aria-selected', 'false');
-            } else {
-                demoTab.classList.add('active-tab', 'demo-tab');
-                realTab.classList.remove('active-tab', 'real-tab');
-                demoTab.setAttribute('aria-selected', 'true');
-                realTab.setAttribute('aria-selected', 'false');
-            }
-
             // Log transaction
             const transactionItem = document.createElement('li');
             transactionItem.textContent = `Fetched ${accountType} balance: ${balance} ${currency} on ${new Date().toLocaleString()}`;
             transactionList.appendChild(transactionItem);
+        } else if (response.error) {
+            console.error('Error:', response.error.message);
+            alert(`Error: ${response.error.message}`);
         }
-    } else if (response.error) {
-        console.error('Error:', response.error.message);
-        alert(`Error: ${response.error.message}`);
-    }
-};
-
+    };
+}
 // Fetch Account Balance
 const getBalanceForAccount = (accountType) => {
     if (ws.readyState === WebSocket.OPEN) {
