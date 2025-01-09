@@ -178,23 +178,30 @@ tradeBtn.addEventListener('click', () => {
         return;
     }
 
+    // Function to authorize and redirect
     const authorizeAndRedirect = (token) => {
         // Ensure the WebSocket connection is open before sending the request
         if (ws.readyState === WebSocket.OPEN) {
+            // Send the authorize request
+            ws.send(JSON.stringify({ authorize: token }));
+
+            // Handle the WebSocket response
             ws.onmessage = (message) => {
                 const response = JSON.parse(message.data);
+
                 if (response.msg_type === 'authorize') {
-                    // Redirect after successful authorization
+                    console.log('Authorization successful. Redirecting...');
+                    // Redirect to the trading site with the token
                     window.location.href = `https://app.deriv.com/dtrader?token=${token}`;
-                } else {
+                } else if (response.error) {
+                    console.error('Authorization error:', response.error.message);
                     alert('Authorization failed. Please log in again.');
                 }
             };
-
-            // Send the authorize request
-            ws.send(JSON.stringify({ authorize: token }));
         } else {
             alert('WebSocket connection is not ready. Please try again.');
+            // Optionally, attempt to reconnect WebSocket
+            reconnectWebSocket(token);
         }
     };
 
@@ -202,5 +209,22 @@ tradeBtn.addEventListener('click', () => {
     authorizeAndRedirect(token);
 });
 
+// Optional: Function to reconnect WebSocket if it's not ready
+const reconnectWebSocket = (token) => {
+    if (ws.readyState !== WebSocket.OPEN) {
+        console.log('Reconnecting WebSocket...');
+        ws = new WebSocket(`wss://ws.binaryws.com/websockets/v3?app_id=${app_id}`);
+
+        ws.onopen = () => {
+            console.log('WebSocket reconnected.');
+            authorizeAndRedirect(token); // Retry authorization after reconnection
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket Error:', error);
+            alert('Unable to reconnect to WebSocket. Please refresh the page.');
+        };
+    }
+};
 
 connectWebSocket();
