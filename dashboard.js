@@ -169,62 +169,39 @@ logoutBtn.addEventListener('click', () => {
     window.location.href = 'https://oauth.deriv.com/oauth2/authorize?app_id=67110&scope=read&redirect_uri=' + encodeURIComponent(window.location.origin + '/dashboard.html');
 });
 
-// Redirect to Trading Site
+
+
+// Deriv OAuth configuration
+const clientId = 'your_client_id'; // Replace with your OAuth Client ID
+const redirectUri = 'https://app.deriv.com/dtrader'; // Replace with your redirect URI
+
+// Trade button event listener
 tradeBtn.addEventListener('click', () => {
-    const token = localStorage.getItem('deriv_token'); // Retrieve token from localStorage
+    const token = localStorage.getItem('deriv_token'); // Check if token is stored locally
 
     if (!token) {
-        alert('You are not logged in. Please log in first.');
-        return;
+        // Redirect to Deriv OAuth login if no token is found
+        const oauthUrl = `https://oauth.deriv.com/oauth2/authorize?app_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+        window.location.href = oauthUrl;
+    } else {
+        // Token exists, redirect to trading site
+        console.log('Using existing token. Redirecting to trading site...');
+        window.location.href = `https://app.deriv.com/dtrader?token=${token}`;
     }
-
-    // Function to authorize and redirect
-    const authorizeAndRedirect = (token) => {
-        // Ensure the WebSocket connection is open before sending the request
-        if (ws.readyState === WebSocket.OPEN) {
-            // Send the authorize request
-            ws.send(JSON.stringify({ authorize: token }));
-
-            // Handle the WebSocket response
-            ws.onmessage = (message) => {
-                const response = JSON.parse(message.data);
-
-                if (response.msg_type === 'authorize') {
-                    console.log('Authorization successful. Redirecting...');
-                    // Redirect to the trading site with the token
-                    window.location.href = `https://app.deriv.com/dtrader?token=${token}`;
-                } else if (response.error) {
-                    console.error('Authorization error:', response.error.message);
-                    alert('Authorization failed. Please log in again.');
-                }
-            };
-        } else {
-            alert('WebSocket connection is not ready. Please try again.');
-            // Optionally, attempt to reconnect WebSocket
-            reconnectWebSocket(token);
-        }
-    };
-
-    // Call the function with the retrieved token
-    authorizeAndRedirect(token);
 });
 
-// Optional: Function to reconnect WebSocket if it's not ready
-const reconnectWebSocket = (token) => {
-    if (ws.readyState !== WebSocket.OPEN) {
-        console.log('Reconnecting WebSocket...');
-        ws = new WebSocket(`wss://ws.binaryws.com/websockets/v3?app_id=${app_id}`);
+// OAuth callback handler
+window.onload = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessToken = urlParams.get('access_token');
 
-        ws.onopen = () => {
-            console.log('WebSocket reconnected.');
-            authorizeAndRedirect(token); // Retry authorization after reconnection
-        };
+    if (accessToken) {
+        // Store the token in localStorage
+        localStorage.setItem('deriv_token', accessToken);
+        console.log('Access token stored successfully.');
 
-        ws.onerror = (error) => {
-            console.error('WebSocket Error:', error);
-            alert('Unable to reconnect to WebSocket. Please refresh the page.');
-        };
+        // Redirect to trading site
+        window.location.href = `https://app.deriv.com/dtrader?token=${accessToken}`;
     }
 };
-
 connectWebSocket();
