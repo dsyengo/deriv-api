@@ -173,35 +173,44 @@ logoutBtn.addEventListener('click', () => {
 
 // Deriv OAuth configuration
 const clientId = app_id; // Replace with your OAuth Client ID
-const redirectUri = 'https://deriv-app.netlify.app/dashboard.html'; // Replace with your redirect URI
+const redirectUri = 'https://deriv-app.netlify.app/dashboard.html'; // Replace with your redirect URI;
+const tradingSiteUrl = 'https://app.deriv.com/dtrader';
 
 // Trade button event listener
 tradeBtn.addEventListener('click', () => {
-    const token = localStorage.getItem('deriv_token'); // Check if token is stored locally
+    const token = localStorage.getItem('deriv_token'); // Retrieve stored token
 
     if (!token) {
-        // Redirect to Deriv OAuth login if no token is found
-        const oauthUrl = `https://oauth.deriv.com/oauth2/authorize?app_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+        // Redirect to Deriv OAuth login if no token exists
+        const oauthUrl = `https://oauth.deriv.com/oauth2/authorize?app_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token`;
         window.location.href = oauthUrl;
     } else {
-        // Token exists, redirect to trading site
-        console.log('Using existing token. Redirecting to trading site...');
-        window.location.href = `https://app.deriv.com/dtrader?token=${token}`;
+        // Token exists, log in and redirect to trading site
+        redirectToTradingSite(token);
     }
 });
 
-// OAuth callback handler
+// OAuth callback handler (for redirect URI page)
 window.onload = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const accessToken = urlParams.get('access_token');
+    const urlHash = new URLSearchParams(window.location.hash.substring(1)); // Parse the hash part of the URL
+    const accessToken = urlHash.get('access_token');
 
     if (accessToken) {
         // Store the token in localStorage
         localStorage.setItem('deriv_token', accessToken);
-        console.log('Access token stored successfully.');
+        console.log('Access token retrieved and stored.');
 
-        // Redirect to trading site
-        window.location.href = `https://app.deriv.com/dtrader?token=${accessToken}`;
+        // Redirect to trading site using the new token
+        redirectToTradingSite(accessToken);
     }
 };
+
+// Function to redirect to the trading site
+function redirectToTradingSite(token) {
+    // Use the token to log in and redirect seamlessly
+    window.location.href = `${tradingSiteUrl}?token=${token}`;
+}
+
+
+
 connectWebSocket();
