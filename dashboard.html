@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Deriv Account Dashboard</title>
+    <title>Deriv Dashboard with Bot</title>
     <link rel="stylesheet" href="./dashboard.css" />
   </head>
   <body>
@@ -32,19 +32,26 @@
           <p id="account-balance" class="real-text">Balance: Loading...</p>
           <p id="account-currency" class="real-text">Currency: Loading...</p>
         </div>
+        <!-- Deriv Bot Section -->
+        <div class="bot-container">
+          <h2>Deriv Bot</h2>
+          <iframe
+            id="bot-frame"
+            src="https://app.deriv.com/bot"
+            title="Deriv Bot"
+            frameborder="0"
+            class="bot-iframe"
+          ></iframe>
+        </div>
         <!-- Log Out Button -->
         <div class="logout-section">
           <button id="logout-btn" class="logout-btn">Log Out</button>
-        </div>
-        <!-- Redirect to Trading Button -->
-        <div class="redirect-section">
-          <button id="trade-btn" class="trade-btn">Go to Trading</button>
         </div>
       </main>
       <footer>
         <p>Powered by Deriv API</p>
       </footer>
     </div>
-    <script src="./dashboard.js"></script>
+    <!-- <script src="./dashboard.js"></script> -->
   </body>
 </html>
