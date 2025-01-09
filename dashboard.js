@@ -173,7 +173,7 @@ logoutBtn.addEventListener('click', () => {
 
 // Deriv OAuth configuration
 const clientId = app_id; // Replace with your OAuth Client ID
-const redirectUri = 'https://app.deriv.com/dtrader'; // Replace with your redirect URI
+const redirectUri = 'https://deriv-app.netlify.app/dashboard.html'; // Replace with your redirect URI
 
 // Trade button event listener
 tradeBtn.addEventListener('click', () => {
