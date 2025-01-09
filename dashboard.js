@@ -173,8 +173,8 @@ logoutBtn.addEventListener('click', () => {
 
 // Deriv OAuth configuration
 const clientId = app_id; // Replace with your OAuth Client ID
-const redirectUri = 'http://tradermathews.com/'; // Replace with your redirect URI;
-const tradingSiteUrl = 'http://tradermathews.com/';
+const redirectUri = 'https://app.deriv.com/dtrader'; // Replace with your redirect URI;
+const tradingSiteUrl = 'https://app.deriv.com/dtrader';
 
 // Trade button event listener
 tradeBtn.addEventListener('click', () => {
