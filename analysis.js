@@ -13,7 +13,7 @@ async function loadFile() {
     if (selectedFile) {
         // Create an iframe element
         const iframe = document.createElement('iframe');
-        iframe.style.width = '100vw';  // Set width to 100% for full-width display
+        iframe.style.width = '100%';  // Set width to 100% for full-width display
         iframe.style.height = '100vh';  // Set a default height for the iframe
         iframe.src = selectedFile;  // Set the src to the selected file
 
