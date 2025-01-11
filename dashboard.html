@@ -150,40 +150,6 @@
         width: 90%;
         margin: auto;
       }
-      /* Tab Navigation */
-      .tab-navigation {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-        gap: 15px;
-      }
-
-      .tab {
-        flex: 1;
-        padding: 10px 20px;
-        text-align: center;
-        background-color: #eaeaea;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: 800;
-        border-radius: 5px;
-        transition: background-color 0.3s, color 0.3s;
-      }
-
-      .tab:hover {
-        background-color: #dcdcdc;
-      }
-
-      .active-tab.real-tab {
-        background-color: #28a745;
-        color: white;
-      }
-
-      .active-tab.demo-tab {
-        background-color: #007bff;
-        color: white;
-      }
 
       /* Account Details */
       .balance-card {
@@ -191,11 +157,12 @@
         align-items: center;
         gap: 15px;
         background: #ffffff;
-        padding: 10px 20px;
+        padding: 10px 10px;
         border-radius: 8px;
         border: 1px solid #ddd;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         font-family: Arial, sans-serif;
+        width: 100%;
       }
 
       #account-balance {
@@ -274,13 +241,14 @@
         <!-- Updated First Container -->
         <div class="section">
           <!-- Existing Content -->
+
+          <div class="market-title">DIGITS CURSOR</div>
           <!-- Account Details -->
           <div class="balance-card" id="balance-card">
             <p id="account-balance" class="real-text">Balance: Loading...</p>
             <p id="account-currency" class="real-text">USD</p>
           </div>
 
-          <div class="market-title">DIGITS CURSOR</div>
           <label for="market">Select Market:</label>
           <select id="market" class="dropdown">
             <option value="">Select Market</option>
