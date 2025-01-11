@@ -9,32 +9,32 @@ fetch('./analysistools.html')
     });
 
 
-// Function to load the selected HTML file
-async function loadFile() {
-    const select = document.getElementById("file-select");
+// Function to load the selected HTML filefunction loadFile() {
+function loadFile() {
+    const fileSelect = document.getElementById("file-select");
     const contentDiv = document.getElementById("content");
 
-    // Get the selected value
-    const selectedFile = select.value;
+    // Get the selected file path
+    const selectedFile = fileSelect.value;
 
     if (selectedFile) {
-        try {
-            // Fetch the content of the selected file
-            const response = await fetch(selectedFile);
+        // Fetch the selected HTML file's content
+        fetch(selectedFile)
+            .then(response => response.text())
+            .then(data => {
+                // Create a shadow DOM to isolate styles
+                const shadowRoot = contentDiv.attachShadow({ mode: 'open' });
 
-            if (response.ok) {
-                const html = await response.text();
-                // Insert the HTML content into the div
-                contentDiv.innerHTML = html;
-            } else {
-                contentDiv.innerHTML =
-                    "<p>Error: Unable to load the selected file.</p>";
-            }
-        } catch (error) {
-            contentDiv.innerHTML = `<p>Error: ${error.message}</p>`;
-        }
+                // Clear previous content and append new content
+                shadowRoot.innerHTML = data;
+            })
+            .catch(error => {
+                console.error("Error loading file:", error);
+                contentDiv.innerHTML = "<p>Error loading content. Please try again.</p>";
+            });
     } else {
-        contentDiv.innerHTML =
-            "<p>Select a file from the dropdown to view its content.</p>";
+        // Reset content div if no file is selected
+        contentDiv.innerHTML = "<p>Select a file from the dropdown to view its content.</p>";
     }
 }
+
