@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Over Under</title>
     <style>
-        /* General Styles */
-        /* body {
+      /* General Styles */
+      /* body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
@@ -20,345 +20,345 @@
             overflow: hidden;
         } */
 
-        .container {
-            background: linear-gradient(45deg, #0f0f0f, #282828, #0f0f0f);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
-            position: relative;
-            width: 80%;
-            max-width: 800px;
-            text-align: center;
-            animation: glow 5s ease-in-out infinite alternate;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
+      .container {
+        background: linear-gradient(45deg, #0f0f0f, #282828, #0f0f0f);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+        position: relative;
+        width: 80%;
+        max-width: 800px;
+        text-align: center;
+        animation: glow 5s ease-in-out infinite alternate;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
 
-        @keyframes glow {
-            0% {
-                background-color: #333;
-            }
-            50% {
-                background-color: #0077ff;
-            }
-            100% {
-                background-color: #00ff77;
-            }
+      @keyframes glow {
+        0% {
+          background-color: #333;
         }
-
-        h1 {
-            color: #ff8c00;
-            font-size: 36px;
-            margin-bottom: 20px;
+        50% {
+          background-color: #0077ff;
         }
-
-        #latest-tick-container {
-            margin-top: 20px;
-            padding: 20px;
-            background: rgba(34, 34, 34, 0.8);
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            text-align: center;
+        100% {
+          background-color: #00ff77;
         }
+      }
 
-        #latest-tick, #last-digit {
-            font-size: 24px;
-            color: #00ff00;
-            font-weight: bold;
-            text-align: center;
-            margin: 10px 0;
+      h1 {
+        color: #ff8c00;
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+
+      #latest-tick-container {
+        margin-top: 20px;
+        padding: 20px;
+        background: rgba(34, 34, 34, 0.8);
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+
+      #latest-tick,
+      #last-digit {
+        font-size: 24px;
+        color: #00ff00;
+        font-weight: bold;
+        text-align: center;
+        margin: 10px 0;
+      }
+
+      .dropdown-container {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .dropdown {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        width: 60%;
+        max-width: 300px;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        transition: all 0.3s ease;
+      }
+
+      .dropdown:hover {
+        box-shadow: 0 0 10px 3px orange;
+        border-color: orange;
+      }
+
+      .dropdown-label {
+        display: block;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      .history-container {
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-height: 150px;
+        overflow-y: auto;
+      }
+
+      .digit-box {
+        width: 30px;
+        height: 30px;
+        margin: 5px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+      }
+
+      .over {
+        background-color: red;
+        color: white;
+      }
+
+      .under {
+        background-color: blue;
+        color: white;
+      }
+
+      .changed-history .digit-box {
+        background-color: purple;
+        color: pink;
+      }
+
+      .predictions-table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        border: 2px solid orange;
+        animation: glowEffect 1.5s ease-in-out infinite alternate;
+        margin-top: 20px;
+      }
+
+      .title {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #ff6600;
+        margin-bottom: 15px;
+      }
+
+      .predictions-table td {
+        padding: 12px;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #3306ff;
+        border: 1px solid orange;
+      }
+
+      .predictions-table td#matches-prediction,
+      .predictions-table td#differs-prediction {
+        font-size: 18px;
+        font-weight: bold;
+        color: #ff6600;
+      }
+
+      @keyframes glowEffect {
+        0% {
+          border-color: orange;
         }
-
-        .dropdown-container {
-            margin-bottom: 20px;
-            text-align: center;
+        50% {
+          border-color: #ff0000;
         }
-
-        .dropdown {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            width: 60%;
-            max-width: 300px;
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            transition: all 0.3s ease;
+        100% {
+          border-color: orange;
         }
+      }
 
-        .dropdown:hover {
-            box-shadow: 0 0 10px 3px orange;
-            border-color: orange;
-        }
+      button {
+        background-color: #ff6600;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        margin: 10px;
+      }
 
-        .dropdown-label {
-            display: block;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
+      button:hover {
+        background-color: #0077ff;
+        transform: scale(1.05);
+      }
 
-        .history-container {
-            margin-top: 30px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-height: 150px;
-            overflow-y: auto;
-        }
+      button:active {
+        transform: scale(0.98);
+      }
 
-        .digit-box {
-            width: 30px;
-            height: 30px;
-            margin: 5px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-        }
+      #timer {
+        font-size: 20px;
+        margin-top: 20px;
+        color: #fff;
+      }
 
-        .over {
-            background-color: red;
-            color: white;
-        }
+      #match-now-message {
+        font-size: 24px;
+        color: green;
+        font-weight: bold;
+        margin-top: 20px;
+      }
 
-        .under {
-            background-color: blue;
-            color: white;
-        }
+      .dropdown-container {
+        margin-top: 20px;
+      }
 
-        .changed-history .digit-box {
-            background-color: purple;
-            color: pink;
-        }
+      select {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+        background-color: #333;
+        color: #fff;
+        border: 1px solid orange;
+      }
 
-        .predictions-table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            border: 2px solid orange;
-            animation: glowEffect 1.5s ease-in-out infinite alternate;
-            margin-top: 20px;
-        }
+      #digit-chart-container {
+        margin-top: 30px;
+      }
 
-        .title {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #ff6600;
-            margin-bottom: 15px;
-        }
-
-        .predictions-table td {
-            padding: 12px;
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #3306ff;
-            border: 1px solid orange;
-        }
-
-        .predictions-table td#matches-prediction,
-        .predictions-table td#differs-prediction {
-            font-size: 18px;
-            font-weight: bold;
-            color: #ff6600;
-        }
-
-        @keyframes glowEffect {
-            0% {
-                border-color: orange;
-            }
-            50% {
-                border-color: #ff0000;
-            }
-            100% {
-                border-color: orange;
-            }
-        }
-
-        button {
-            background-color: #ff6600;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-            margin: 10px;
-        }
-
-        button:hover {
-            background-color: #0077ff;
-            transform: scale(1.05);
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        #timer {
-            font-size: 20px;
-            margin-top: 20px;
-            color: #fff;
-        }
-
-        #match-now-message {
-            font-size: 24px;
-            color: green;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        .dropdown-container {
-            margin-top: 20px;
-        }
-
-        select {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 8px;
-            background-color: #333;
-            color: #fff;
-            border: 1px solid orange;
-        }
-
-        #digit-chart-container {
-            margin-top: 30px;
-        }
-
-        canvas {
-            max-width: 100%;
-            height: 400px;
-        }
-
+      canvas {
+        max-width: 100%;
+        height: 400px;
+      }
     </style>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const appId = '66860';
-            const tickSocketUrl = `wss://ws.binaryws.com/websockets/v3?app_id=${appId}`;
-            let tickSocket = null;
-            let history = [];
-            const marketDropdown = document.getElementById("market");
-            const latestTickElem = document.getElementById("latest-tick");
-            const lastDigitElem = document.getElementById("last-digit");
-            const historyContainer = document.querySelector('.history-container');
+      document.addEventListener("DOMContentLoaded", () => {
+        const appId = "67110";
+        const tickSocketUrl = `wss://ws.binaryws.com/websockets/v3?app_id=${appId}`;
+        let tickSocket = null;
+        let history = [];
+        const marketDropdown = document.getElementById("market");
+        const latestTickElem = document.getElementById("latest-tick");
+        const lastDigitElem = document.getElementById("last-digit");
+        const historyContainer = document.querySelector(".history-container");
 
-            marketDropdown.addEventListener("change", () => {
-                const selectedMarket = marketDropdown.value;
+        marketDropdown.addEventListener("change", () => {
+          const selectedMarket = marketDropdown.value;
 
-                if (tickSocket) {
-                    tickSocket.close();
+          if (tickSocket) {
+            tickSocket.close();
+          }
+
+          if (selectedMarket) {
+            tickSocket = new WebSocket(tickSocketUrl);
+            tickSocket.onopen = () => {
+              tickSocket.send(
+                JSON.stringify({
+                  ticks: selectedMarket,
+                  subscribe: 1,
+                })
+              );
+            };
+
+            tickSocket.onmessage = (event) => {
+              const data = JSON.parse(event.data);
+
+              if (data.tick) {
+                const quote = data.tick.quote.toFixed(data.tick.pip_size);
+                const lastDigit = quote.slice(-1);
+
+                latestTickElem.textContent = `Latest Tick: ${quote}`;
+                lastDigitElem.textContent = `Last Digit: ${lastDigit}`;
+
+                // Determine Over (O) or Under (U)
+                const result = lastDigit >= 5 ? "O" : "U";
+                history.push({ digit: lastDigit, result });
+
+                if (history.length > 50) {
+                  history.shift(); // Remove the first item when more than 50
                 }
 
-                if (selectedMarket) {
-                    tickSocket = new WebSocket(tickSocketUrl);
-                    tickSocket.onopen = () => {
-                        tickSocket.send(
-                            JSON.stringify({
-                                ticks: selectedMarket,
-                                subscribe: 1
-                            })
-                        );
-                    };
+                // Update history UI
+                updateHistory();
+              }
+            };
 
-                    tickSocket.onmessage = (event) => {
-                        const data = JSON.parse(event.data);
+            tickSocket.onerror = (error) => {
+              console.error("WebSocket error:", error);
+              latestTickElem.textContent = "Error fetching tick data";
+              lastDigitElem.textContent = "--";
+            };
 
-                        if (data.tick) {
-                            const quote = data.tick.quote.toFixed(data.tick.pip_size);
-                            const lastDigit = quote.slice(-1);
-
-                            latestTickElem.textContent = `Latest Tick: ${quote}`;
-                            lastDigitElem.textContent = `Last Digit: ${lastDigit}`;
-
-                            // Determine Over (O) or Under (U)
-                            const result = lastDigit >= 5 ? 'O' : 'U';
-                            history.push({ digit: lastDigit, result });
-
-                            if (history.length > 50) {
-                                history.shift(); // Remove the first item when more than 50
-                            }
-
-                            // Update history UI
-                            updateHistory();
-                        }
-                    };
-
-                    tickSocket.onerror = (error) => {
-                        console.error("WebSocket error:", error);
-                        latestTickElem.textContent = "Error fetching tick data";
-                        lastDigitElem.textContent = "--";
-                    };
-
-                    tickSocket.onclose = () => {
-                        console.log("WebSocket connection closed");
-                    };
-                } else {
-                    latestTickElem.textContent = "Latest Tick: --";
-                    lastDigitElem.textContent = "Last Digit: --";
-                }
-            });
-
-            // Update history UI
-            function updateHistory() {
-                historyContainer.innerHTML = '';
-
-                history.forEach(entry => {
-                    const box = document.createElement('div');
-                    box.classList.add('digit-box');
-                    box.classList.add(entry.result === 'O' ? 'over' : 'under');
-                    box.textContent = entry.result;
-                    historyContainer.appendChild(box);
-                });
-            }
-
-            // Change color of all history to purple and pink when market changes
-            marketDropdown.addEventListener('change', () => {
-                const selectedMarket = marketDropdown.value;
-                const isNewMarket = selectedMarket !== '';
-                
-                if (isNewMarket) {
-                    // Change existing history to purple and pink
-                    historyContainer.classList.add('changed-history');
-                } else {
-                    // Reset history colors
-                    historyContainer.classList.remove('changed-history');
-                }
-            });
+            tickSocket.onclose = () => {
+              console.log("WebSocket connection closed");
+            };
+          } else {
+            latestTickElem.textContent = "Latest Tick: --";
+            lastDigitElem.textContent = "Last Digit: --";
+          }
         });
-    </script>
-</head>
-<body>
-    <div class="container">
-        <h1>Over and Under</h1>
-        <div class="dropdown-container">
-            <label for="market" class="dropdown-label">Select Market</label>
-            <select id="market" class="dropdown">
-                <option value="">Select Market</option>
-                <option value="R_10">Volatility 10 Index</option>
-                <option value="R_25">Volatility 25 Index</option>
-                <option value="R_50">Volatility 50 Index</option>
-                <option value="R_75">Volatility 75 Index</option>
-                <option value="R_100">Volatility 100 Index</option>
-                <option value="1HZ10V">1Hz Volatility 10 Index</option>
-                <option value="1HZ25V">1Hz Volatility 25 Index</option>
-                <option value="1HZ50V">1Hz Volatility 50 Index</option>
-                <option value="1HZ75V">1Hz Volatility 75 Index</option>
-                <option value="1HZ100V">1Hz Volatility 100 Index</option>
-            </select>
-        </div>
-        <div id="latest-tick-container">
-            <p id="latest-tick">Latest Tick: --</p>
-            <p id="last-digit">Last Digit: --</p>
-        </div>
 
-        <!-- History -->
-        <div class="history-container"></div>
+        // Update history UI
+        function updateHistory() {
+          historyContainer.innerHTML = "";
+
+          history.forEach((entry) => {
+            const box = document.createElement("div");
+            box.classList.add("digit-box");
+            box.classList.add(entry.result === "O" ? "over" : "under");
+            box.textContent = entry.result;
+            historyContainer.appendChild(box);
+          });
+        }
+
+        // Change color of all history to purple and pink when market changes
+        marketDropdown.addEventListener("change", () => {
+          const selectedMarket = marketDropdown.value;
+          const isNewMarket = selectedMarket !== "";
+
+          if (isNewMarket) {
+            // Change existing history to purple and pink
+            historyContainer.classList.add("changed-history");
+          } else {
+            // Reset history colors
+            historyContainer.classList.remove("changed-history");
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Over and Under</h1>
+      <div class="dropdown-container">
+        <label for="market" class="dropdown-label">Select Market</label>
+        <select id="market" class="dropdown">
+          <option value="">Select Market</option>
+          <option value="R_10">Volatility 10 Index</option>
+          <option value="R_25">Volatility 25 Index</option>
+          <option value="R_50">Volatility 50 Index</option>
+          <option value="R_75">Volatility 75 Index</option>
+          <option value="R_100">Volatility 100 Index</option>
+          <option value="1HZ10V">1Hz Volatility 10 Index</option>
+          <option value="1HZ25V">1Hz Volatility 25 Index</option>
+          <option value="1HZ50V">1Hz Volatility 50 Index</option>
+          <option value="1HZ75V">1Hz Volatility 75 Index</option>
+          <option value="1HZ100V">1Hz Volatility 100 Index</option>
+        </select>
+      </div>
+      <div id="latest-tick-container">
+        <p id="latest-tick">Latest Tick: --</p>
+        <p id="last-digit">Last Digit: --</p>
+      </div>
+
+      <!-- History -->
+      <div class="history-container"></div>
     </div>
-</body>
+  </body>
 </html>
