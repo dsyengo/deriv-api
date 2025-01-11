@@ -63,8 +63,6 @@ const handleApiResponse = (response) => {
 
     if (response.msg_type === "authorize") {
         console.log("Authorization successful.");
-        const accountType = response.echo_req.account_type || "real";
-        getBalanceForAccount(accountType);
     } else if (response.msg_type === "balance") {
         if (response.balance) {
             const { balance, currency } = response.balance;
@@ -85,15 +83,28 @@ const handleApiResponse = (response) => {
     }
 };
 
-// Fetch Account Balance
-const getBalanceForAccount = (accountType) => {
+// Fetch Real Account Balance
+const fetchRealAccountBalance = () => {
     if (ws.readyState === WebSocket.OPEN) {
         ws.send(
             JSON.stringify({
-                balance: 1,
+                balance: 1, 
             })
         );
-        console.log(`Balance request sent for ${accountType} account.`);
+        console.log("Real account balance request sent.");
+    }
+};
+
+// Fetch Demo Account Balance
+const fetchDemoAccountBalance = () => {
+    if (ws.readyState === WebSocket.OPEN) {
+        ws.send(
+            JSON.stringify({
+                balance: 1, // Demo account balance request
+                account_type: "virtual",
+            })
+        );
+        console.log("Demo account balance request sent.");
     }
 };
 
@@ -101,8 +112,15 @@ const getBalanceForAccount = (accountType) => {
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
 // Handle Tab Switching
-realTab.addEventListener("click", () => switchAccount("real"));
-demoTab.addEventListener("click", () => switchAccount("demo"));
+realTab.addEventListener("click", () => {
+    switchAccount("real");
+    fetchRealAccountBalance(); // Call real account balance function
+});
+
+demoTab.addEventListener("click", () => {
+    switchAccount("virtual");
+    fetchDemoAccountBalance(); // Call demo account balance function
+});
 
 // Switch Account Based on Tab Click
 const switchAccount = (accountType) => {
@@ -112,15 +130,12 @@ const switchAccount = (accountType) => {
         demoTab.classList.remove("active-tab", "demo-tab");
         realTab.setAttribute("aria-selected", "true");
         demoTab.setAttribute("aria-selected", "false");
-    } else if (accountType === "demo") {
+    } else if (accountType === "virtual") {
         demoTab.classList.add("active-tab", "demo-tab");
         realTab.classList.remove("active-tab", "real-tab");
         demoTab.setAttribute("aria-selected", "true");
         realTab.setAttribute("aria-selected", "false");
     }
-
-    // Fetch the balance for the selected account type
-    getBalanceForAccount(accountType);
 };
 
 // Initialize on window load
