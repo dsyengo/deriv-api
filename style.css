@@ -166,6 +166,35 @@ iframe {
   font-weight: bold; /* Emphasize the balance text */
 }
 
+/* Login Button Container */
+.login-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Login Button Styling */
+.login-button {
+  background-color: #007bff; /* Primary blue color */
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.login-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.login-button:active {
+  background-color: #003f8f; /* Even darker blue on click */
+  transform: scale(0.98);
+}
+
 /* Media query for small devices */
 @media (max-width: 768px) {
   body {

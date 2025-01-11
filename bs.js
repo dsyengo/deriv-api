@@ -45,6 +45,35 @@ const stopHeartbeat = () => {
     clearInterval(heartbeatInterval);
 };
 
+
+window.onload = () => {
+    const loginContainer = document.getElementById("login-container");
+    const loginButton = document.getElementById("login-button");
+
+    const token = new URLSearchParams(window.location.search).get("token1");
+    const redirect_uri = encodeURIComponent(window.location.origin + "/dashboard.html");
+
+    if (token) {
+        localStorage.setItem("deriv_token", token);
+        window.history.replaceState({}, document.title, window.location.pathname);
+        authorize(token);
+    } else {
+        const storedToken = localStorage.getItem("deriv_token");
+        if (storedToken) {
+            authorize(storedToken);
+        } else {
+            console.error("Token is missing. Showing login button...");
+            loginContainer.style.display = "block";
+
+            // Add click event to redirect to login
+            loginButton.addEventListener("click", () => {
+                window.location.href = `https://oauth.deriv.com/oauth2/authorize?app_id=${app_id}&scope=read&redirect_uri=${redirect_uri}`;
+            });
+        }
+    }
+};
+
+
 // Authorize the user
 const authorize = (token) => {
     if (ws.readyState === WebSocket.OPEN) {
