@@ -1,35 +1,31 @@
- /* Inline CSS for styling */
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: #f9f9f9;
-      }
+/* Inline CSS for styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f9f9f9;
+}
 
-      .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-      }
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
 
-      select {
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        cursor: pointer;
-        width: 300px;
-        text-align: center;
-      }
+select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  width: 300px;
+  text-align: center;
+}
 
-      .content {
-        margin-top: 20px;
-        width: 80%;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        background: #fff;
-        padding: 20px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        overflow: auto;
-      }
-  
+#content {
+  width: 100%;
+  padding: 20px; /* Optional padding for better spacing */
+  box-sizing: border-box; /* Ensures padding is included in the element's width */
+  overflow: auto; /* Handles overflow content gracefully */
+  height: auto; /* Ensures the div height adjusts based on content */
+}
