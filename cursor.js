@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     const appId = '67110';
     const tickSocketUrl = `wss://ws.binaryws.com/websockets/v3?app_id=${appId}`;
@@ -103,12 +104,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     const leastFrequent = digitFrequencies.indexOf(minFrequency);
 
                     mostFrequentElem.textContent = `Most Frequent: ${mostFrequent} (${maxFrequency} times)`;
-                    leastFrequentElem.textContent = ` Least Frequent: ${leastFrequent} (${minFrequency} times)`;
+                    leastFrequentElem.textContent = `Least Frequent: ${leastFrequent} (${minFrequency} times)`;
 
                     // Update the most frequent digit every 10 ticks
                     if (tickCount % 10 === 0) {
                         // Update the "Most Frequent Digit" display with new data
-                        frequentDigitDisplay.textContent = ` Most Frequent Digit: ${mostFrequent}`;
+                        frequentDigitDisplay.textContent = `Most Frequent Digit: ${mostFrequent}`;
                     }
                 }
             };
@@ -129,6 +130,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     digitCircleContainer.appendChild(arrow);
 });
-
-
 

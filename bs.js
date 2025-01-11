@@ -1,11 +1,12 @@
 // Get elements
 const accountBalance = document.getElementById("account-balance");
 const accountCurrency = document.getElementById("account-currency");
+const loginButton = document.getElementById("login-button")
 
 const app_id = '67110'; // Replace with your app ID
 let ws;
-const HEARTBEAT_INTERVAL = 30000;
 let heartbeatInterval;
+const HEARTBEAT_INTERVAL = 30000;
 
 // Initialize WebSocket connection
 const connectWebSocket = () => {
@@ -37,6 +38,7 @@ const startHeartbeat = () => {
     heartbeatInterval = setInterval(() => {
         if (ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify({ ping: 1 }));
+            console.log("Heartbeat ping sent.");
         }
     }, HEARTBEAT_INTERVAL);
 };
@@ -45,75 +47,83 @@ const stopHeartbeat = () => {
     clearInterval(heartbeatInterval);
 };
 
-
-window.onload = () => {
-    const loginContainer = document.getElementById("login-container");
-    const loginButton = document.getElementById("login-button");
-
-    const token = new URLSearchParams(window.location.search).get("token1");
-    const redirect_uri = encodeURIComponent(window.location.origin + "/dashboard.html");
-
-    if (token) {
-        localStorage.setItem("deriv_token", token);
-        window.history.replaceState({}, document.title, window.location.pathname);
-        authorize(token);
-    } else {
-        const storedToken = localStorage.getItem("deriv_token");
-        if (storedToken) {
-            authorize(storedToken);
-        } else {
-            console.error("Token is missing. Showing login button...");
-            loginContainer.style.display = "block";
-
-            // Add click event to redirect to login
-            loginButton.addEventListener("click", () => {
-                window.location.href = `https://oauth.deriv.com/oauth2/authorize?app_id=${app_id}&scope=read&redirect_uri=${redirect_uri}`;
-            });
-        }
-    }
-};
-
-
 // Authorize the user
 const authorize = (token) => {
     if (ws.readyState === WebSocket.OPEN) {
         ws.send(JSON.stringify({ authorize: token }));
+        console.log("Authorization request sent.");
     }
 };
 
 // Handle WebSocket Responses
 const handleApiResponse = (response) => {
-    if (response.msg_type === "balance" && response.balance) {
-        const { balance, currency } = response.balance;
-        accountBalance.textContent = `Balance: ${balance}`;
-        accountCurrency.textContent = currency;
-    } else if (response.error) {
-        console.error("Error:", response.error.message);
+    console.log("Response received:", response);
+
+    if (response.msg_type === "authorize") {
+        console.log("Authorization successful.");
+        loginButton.remove
+        const accountType = response.echo_req.account_type || "real";
+        getBalanceForAccount(accountType);
+    } else if (response.msg_type === "balance") {
+        if (response.balance) {
+            const { balance, currency } = response.balance;
+            const accountType = response.echo_req.account_type || "real";
+
+            // Update UI
+            accountBalance.textContent = `Balance: ${balance}`;
+            accountCurrency.textContent = `${currency}`;
+
+        } else if (response.error) {
+            console.error("Error:", response.error.message);
+            alert(`Error: ${response.error.message}`);
+        }
     }
 };
 
 // Fetch Account Balance
-const fetchAccountBalance = () => {
+const getBalanceForAccount = (accountType) => {
     if (ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({ balance: 1 }));
+        ws.send(
+            JSON.stringify({
+                balance: 1,
+            })
+        );
+        console.log(`Balance request sent for ${accountType} account.`);
     }
 };
+getBalanceForAccount()
+
+// Capitalize First Letter
+const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+
+// Handle Tab Switching
+realTab.addEventListener("click", () => switchAccount("real"));
+demoTab.addEventListener("click", () => switchAccount("demo"));
+
+
 
 // Initialize on window load
 window.onload = () => {
-    const token = new URLSearchParams(window.location.search).get("token1");
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token1");
     const redirect_uri = encodeURIComponent(window.location.origin + "/dashboard.html");
 
     if (token) {
+        // Store the token in localStorage
         localStorage.setItem("deriv_token", token);
+
+        // Redirect the user to the dashboard (without the token in the URL)
         window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Authorize the user using the token
         authorize(token);
     } else {
+        // Check if the token is already stored
         const storedToken = localStorage.getItem("deriv_token");
         if (storedToken) {
             authorize(storedToken);
         } else {
-            console.error("Token is missing. Redirecting to login...");
+            console.error("Token is missing. Please log in.");
             window.location.href = `https://oauth.deriv.com/oauth2/authorize?app_id=${app_id}&scope=read&redirect_uri=${redirect_uri}`;
         }
     }
