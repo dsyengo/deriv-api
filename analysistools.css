@@ -22,7 +22,7 @@ select {
   text-align: center;
 }
 
-#content {
+.content {
   width: 100%;
   padding: 20px; /* Optional padding for better spacing */
   box-sizing: border-box; /* Ensures padding is included in the element's width */
