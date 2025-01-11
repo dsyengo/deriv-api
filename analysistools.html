@@ -4,42 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Analysis Tools</title>
-    <style>
-      /* Inline CSS for styling */
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: #f9f9f9;
-      }
-
-      .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-      }
-
-      select {
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        cursor: pointer;
-        width: 300px;
-        text-align: center;
-      }
-
-      .content {
-        margin-top: 20px;
-        width: 80%;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        background: #fff;
-        padding: 20px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        overflow: auto;
-      }
-    </style>
+    <link rel="stylesheet" href="./analysistools.css" />
   </head>
   <body>
     <div class="container">
@@ -54,37 +19,6 @@
         <p>Select a file from the dropdown to view its content.</p>
       </div>
     </div>
-
-    <script>
-      // Function to load the selected HTML file
-      async function loadFile() {
-        const select = document.getElementById("file-select");
-        const contentDiv = document.getElementById("content");
-
-        // Get the selected value
-        const selectedFile = select.value;
-
-        if (selectedFile) {
-          try {
-            // Fetch the content of the selected file
-            const response = await fetch(selectedFile);
-
-            if (response.ok) {
-              const html = await response.text();
-              // Insert the HTML content into the div
-              contentDiv.innerHTML = html;
-            } else {
-              contentDiv.innerHTML =
-                "<p>Error: Unable to load the selected file.</p>";
-            }
-          } catch (error) {
-            contentDiv.innerHTML = `<p>Error: ${error.message}</p>`;
-          }
-        } else {
-          contentDiv.innerHTML =
-            "<p>Select a file from the dropdown to view its content.</p>";
-        }
-      }
-    </script>
+    <script src="./analysis.js"></script>
   </body>
 </html>
