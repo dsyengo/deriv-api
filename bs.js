@@ -91,14 +91,12 @@ const getBalanceForAccount = (accountType) => {
         console.log(`Balance request sent for ${accountType} account.`);
     }
 };
-getBalanceForAccount()
+
 
 // Capitalize First Letter
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
-// Handle Tab Switching
-realTab.addEventListener("click", () => switchAccount("real"));
-demoTab.addEventListener("click", () => switchAccount("demo"));
+
 
 
 
