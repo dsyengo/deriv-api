@@ -9,32 +9,37 @@ fetch('./analysistools.html')
     });
 
 
-// Function to load the selected HTML filefunction loadFile() {
-function loadFile() {
-    const fileSelect = document.getElementById("file-select");
+
+
+// Function to load the selected HTML file
+async function loadFile() {
+    const select = document.getElementById("file-select");
     const contentDiv = document.getElementById("content");
 
-    // Get the selected file path
-    const selectedFile = fileSelect.value;
+    // Get the selected value
+    const selectedFile = select.value;
 
     if (selectedFile) {
-        // Fetch the selected HTML file's content
-        fetch(selectedFile)
-            .then(response => response.text())
-            .then(data => {
+        try {
+            // Fetch the content of the selected file
+            const response = await fetch(selectedFile);
+
+            if (response.ok) {
                 // Create a shadow DOM to isolate styles
                 const shadowRoot = contentDiv.attachShadow({ mode: 'open' });
+                const html = await response.text();
+                // Insert the HTML content into the div
+                shadowRoot.innerHTML = html;
 
-                // Clear previous content and append new content
-                shadowRoot.innerHTML = data;
-            })
-            .catch(error => {
-                console.error("Error loading file:", error);
-                contentDiv.innerHTML = "<p>Error loading content. Please try again.</p>";
-            });
+            } else {
+                shadowRoot.innerHTML =
+                    "<p>Error: Unable to load the selected file.</p>";
+            }
+        } catch (error) {
+            shadowRoot.innerHTML = `<p>Error: ${error.message}</p>`;
+        }
     } else {
-        // Reset content div if no file is selected
-        contentDiv.innerHTML = "<p>Select a file from the dropdown to view its content.</p>";
+        shadowRoot.innerHTML =
+            "<p>Select a file from the dropdown to view its content.</p>";
     }
 }
-
