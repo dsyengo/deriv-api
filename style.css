@@ -144,32 +144,26 @@ iframe {
   margin: auto;
 }
 
-/* Account Details */
 .balance-card {
   display: flex;
-  flex-direction: column; /* Stack items on smaller screens */
-  align-items: flex-start;
-  gap: 10px;
-  background: #ffffff;
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-  width: 100%; /* Full width in smaller screens */
-  max-width: 400px; /* Limit width on larger screens */
-  margin: 0 auto; /* Center align */
+  flex-direction: column; /* Stack items vertically */
+  align-items: flex-start; /* Align items to the start of the card */
+  gap: 12px; /* Spacing between each item in the card */
+  background: #ffffff; /* White background for clarity */
+  padding: 20px; /* Add consistent padding */
+  border-radius: 10px; /* Slightly rounded corners */
+  border: 1px solid #ccc; /* Subtle border for definition */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Softer shadow for depth */
+  font-family: "Arial", sans-serif; /* Clean font */
+  width: 100%; /* Full width for smaller screens */
+  max-width: 380px; /* Constrain width on larger screens */
+  margin: 20px auto; /* Center align and add spacing around the card */
 }
 
 #account-balance {
-  font-size: 16px;
-  color: #333;
-}
-
-#account-currency {
-  font-size: 16px;
-  color: #555;
-  font-weight: bold;
+  font-size: 18px; /* Slightly larger font for emphasis */
+  color: #333; /* Neutral dark gray for easy readability */
+  font-weight: bold; /* Emphasize the balance text */
 }
 
 /* Media query for small devices */
