@@ -61,7 +61,7 @@ const handleApiResponse = (response) => {
 
     if (response.msg_type === "authorize") {
         console.log("Authorization successful.");
-        loginButton.remove
+        loginButton.remove()
         const accountType = response.echo_req.account_type || "real";
         getBalanceForAccount(accountType);
     } else if (response.msg_type === "balance") {
