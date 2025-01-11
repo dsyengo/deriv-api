@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trading Dashboard</title>
     <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./analysistools.css" />
   </head>
   <body>
     <div class="container">
@@ -51,7 +52,18 @@
         <!-- Container 2 -->
         <div class="section">
           <!-- Container 2 -->
-          <div id="analysis-tools-container" class="analysis-tools"></div>
+          <div class="container">
+            <label for="file-select">Choose an Analysis Strategy:</label>
+            <select id="file-select" onchange="loadFile()">
+              <option value="">Select a File</option>
+              <option value="./overunder (1).html">Over/Under</option>
+              <option value="./evenodd (1).html">Even/Odd</option>
+              <option value="./matches (1).html">Matches</option>
+            </select>
+            <div id="content" class="content">
+              <p>Select a file from the dropdown to view its content.</p>
+            </div>
+          </div>
         </div>
 
         <!-- Container 3 -->
@@ -64,5 +76,6 @@
     <script src="./bs.js"></script>
     <script src="./cursor.js"></script>
     <script src="./login.js"></script>
+    <script src="./analysis.js"></script>
   </body>
 </html>
