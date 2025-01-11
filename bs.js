@@ -91,7 +91,6 @@ const getBalanceForAccount = (accountType) => {
         ws.send(
             JSON.stringify({
                 balance: 1,
-                account_type: accountType,
             })
         );
         console.log(`Balance request sent for ${accountType} account.`);
