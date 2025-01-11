@@ -129,3 +129,14 @@ window.onload = () => {
 
 // Establish WebSocket connection
 connectWebSocket();
+
+
+const analysisContainer = document.getElementById('analysis-tools-container');
+fetch('./analysistools.html')
+    .then(response => response.text())
+    .then(html => {
+        analysisContainer.innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Error loading analysis tools:', error);
+    });
