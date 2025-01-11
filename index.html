@@ -3,24 +3,552 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login to Deriv Analysis Tool</title>
-    <link rel="stylesheet" href="./style.css" />
+    <title>Trading Dashboard</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #0a0333;
+        color: red;
+      }
+      header .left,
+      header .right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      header .right .balance {
+        color: #0f0;
+        font-weight: bold;
+      }
+      header .right .link-account {
+        padding: 10px 20px;
+        background-color: #ff0000;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .container {
+        max-width: 100vw;
+        max-height: 100vh;
+        margin: 20px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .main-content {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .section {
+        flex: 1;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        min-width: 280px;
+      }
+      .section h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .digit-circle-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        position: relative;
+      }
+
+      .digit-circle {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 50%;
+        background-color: #121212;
+        color: #fff;
+        margin: 5px;
+        border: 2px solid #fff;
+      }
+
+      .arrow {
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 15px solid #00ff00;
+        position: absolute;
+      }
+      .highlight {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+      .highlight p {
+        flex: 1;
+        text-align: center;
+        margin: 0 5px;
+        padding: 10px;
+        border-radius: 5px;
+      }
+      .highlight .most {
+        background-color: #d4edda;
+        color: #155724;
+      }
+      .highlight .least {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+      iframe {
+        width: 100%;
+        height: 400px;
+        border: none;
+      }
+      .market-info {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-family: "Roboto", sans-serif;
+        color: #28a745;
+        background-color: #f0f8f0;
+        padding: 10px;
+        border-radius: 8px;
+        width: 200px;
+        margin: 10px auto;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .market-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: red;
+        font-family: "Roboto", sans-serif;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .market-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        padding: 10px;
+        width: 90%;
+        margin: auto;
+      }
+      /* Tab Navigation */
+      .tab-navigation {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        gap: 15px;
+      }
+
+      .tab {
+        flex: 1;
+        padding: 10px 20px;
+        text-align: center;
+        background-color: #eaeaea;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 800;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      .tab:hover {
+        background-color: #dcdcdc;
+      }
+
+      .active-tab.real-tab {
+        background-color: #28a745;
+        color: white;
+      }
+
+      .active-tab.demo-tab {
+        background-color: #007bff;
+        color: white;
+      }
+
+      /* Account Details */
+      .balance-card {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: center;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      #account-title {
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .real-text {
+        font-size: 16px;
+        color: #555;
+        margin: 5px 0;
+      }
+
+      /* Media query for small devices */
+      @media (max-width: 768px) {
+        body {
+          margin: 0;
+        }
+        header {
+          flex-direction: column;
+          text-align: center;
+        }
+        .container {
+          max-width: 100%;
+          width: 100%;
+          margin: 0;
+          padding: 10px;
+          border-radius: 0;
+          box-shadow: none;
+        }
+        .main-content {
+          flex-direction: column;
+          gap: 15px;
+        }
+        .market-container {
+          width: 100%;
+          gap: 10px;
+        }
+        .market-title {
+          font-size: 20px;
+        }
+        .section {
+          padding: 15px;
+        }
+      }
+
+      @media (max-width: 430px) {
+        header {
+          font-size: 14px;
+        }
+        .market-title {
+          font-size: 18px;
+        }
+        .digit-circle {
+          width: 30px;
+          height: 30px;
+          font-size: 14px;
+        }
+        .container {
+          padding: 5px;
+        }
+        .section {
+          padding: 10px;
+          min-width: 100%;
+        }
+        iframe {
+          height: 300px;
+        }
+      }
+    </style>
+    <script>
+            document.addEventListener("DOMContentLoaded", () => {
+          const appId = '66860';
+          const tickSocketUrl = wss://ws.binaryws.com/websockets/v3?app_id=${appId};
+          let tickSocket = null;
+          const marketDropdown = document.getElementById("market");
+          const latestTickElem = document.getElementById("latest-tick");
+          const lastDigitElem = document.getElementById("last-digit");
+          const digitCircleContainer = document.getElementById("digit-circle-container");
+          const arrow = document.createElement("div");
+          const highlightContainer = document.createElement("div");
+          highlightContainer.classList.add("highlight");
+
+          let digitFrequencies = Array(10).fill(0);
+          let tickCount = 0;
+
+          const mostFrequentElem = document.createElement("p");
+          mostFrequentElem.classList.add("most");
+          mostFrequentElem.textContent = "Most Frequent: --";
+          highlightContainer.appendChild(mostFrequentElem);
+
+          const leastFrequentElem = document.createElement("p");
+          leastFrequentElem.classList.add("least");
+          leastFrequentElem.textContent = "Least Frequent: --";
+          highlightContainer.appendChild(leastFrequentElem);
+
+          // Create the Most Frequent Digit display
+          const frequentDigitDisplay = document.createElement("div");
+          frequentDigitDisplay.id = "frequent-digit";
+          frequentDigitDisplay.style.textAlign = 'center';
+          frequentDigitDisplay.style.padding = '10px';
+          frequentDigitDisplay.style.marginTop = '20px';
+          frequentDigitDisplay.style.fontSize = '18px';
+          frequentDigitDisplay.style.fontWeight = 'bold';
+          frequentDigitDisplay.style.backgroundColor = '#f8f9fa';
+          frequentDigitDisplay.style.borderRadius = '8px';
+          frequentDigitDisplay.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.1)';
+          frequentDigitDisplay.textContent = "Most Frequent Digit: --";
+          highlightContainer.appendChild(frequentDigitDisplay);  // Append to the container after the least frequent element.
+
+          document.querySelector(".section").appendChild(highlightContainer);
+
+          arrow.classList.add("arrow");
+
+          // Create digit circles
+          for (let i = 0; i < 10; i++) {
+              const digitCircle = document.createElement("div");
+              digitCircle.textContent = i;
+              digitCircle.classList.add("digit-circle");
+              digitCircleContainer.appendChild(digitCircle);
+          }
+
+          marketDropdown.addEventListener("change", () => {
+              const selectedMarket = marketDropdown.value;
+
+              if (tickSocket) {
+                  tickSocket.close();
+              }
+
+              arrow.style.display = "none";
+              digitFrequencies.fill(0);
+              tickCount = 0;
+              mostFrequentElem.textContent = "Most Frequent: --";
+              leastFrequentElem.textContent = "Least Frequent: --";
+
+              if (selectedMarket) {
+                  tickSocket = new WebSocket(tickSocketUrl);
+
+                  tickSocket.onopen = () => {
+                      tickSocket.send(
+                          JSON.stringify({
+                              ticks: selectedMarket,
+                              subscribe: 1
+                          })
+                      );
+                  };
+
+                  tickSocket.onmessage = (event) => {
+                      const data = JSON.parse(event.data);
+
+                      if (data.tick) {
+                          const quote = data.tick.quote.toFixed(data.tick.pip_size);
+                          const lastDigit = parseInt(quote.slice(-1));
+
+                          latestTickElem.textContent = Latest Tick: ${quote};
+                          lastDigitElem.textContent = Last Digit: ${lastDigit};
+
+                          // Update arrow position
+                          const targetDigit = digitCircleContainer.children[lastDigit];
+                          const targetRect = targetDigit.getBoundingClientRect();
+                          const containerRect = digitCircleContainer.getBoundingClientRect();
+                          arrow.style.display = "block";
+                          arrow.style.left = ${targetRect.left - containerRect.left + targetRect.width / 2 - 10}px;
+                          arrow.style.top = ${targetRect.bottom - containerRect.top}px;
+
+                          // Update digit frequencies
+                          digitFrequencies[lastDigit]++;
+                          tickCount++;
+
+                          // Find most and least frequent digits
+                          const maxFrequency = Math.max(...digitFrequencies);
+                          const minFrequency = Math.min(...digitFrequencies);
+                          const mostFrequent = digitFrequencies.indexOf(maxFrequency);
+                          const leastFrequent = digitFrequencies.indexOf(minFrequency);
+
+                          mostFrequentElem.textContent = Most Frequent: ${mostFrequent} (${maxFrequency} times);
+                          leastFrequentElem.textContent = Least Frequent: ${leastFrequent} (${minFrequency} times);
+
+                          // Update the most frequent digit every 10 ticks
+                          if (tickCount % 10 === 0) {
+                              // Update the "Most Frequent Digit" display with new data
+                              frequentDigitDisplay.textContent = Most Frequent Digit: ${mostFrequent};
+                          }
+                      }
+                  };
+
+                  tickSocket.onerror = (error) => {
+                      console.error("WebSocket error:", error);
+                  };
+
+                  tickSocket.onclose = () => {
+                      console.log("WebSocket connection closed");
+                  };
+              } else {
+                  latestTickElem.textContent = "Latest Tick: --";
+                  lastDigitElem.textContent = "Last Digit: --";
+                  arrow.style.display = "none";
+              }
+          });
+
+          digitCircleContainer.appendChild(arrow);
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          const appId = '66860';  // Replace with your actual App ID
+          const wsUrl = wss://ws.binaryws.com/websockets/v3?app_id=${appId};
+          let ws;
+
+          // Get the balance element to update it
+          const userBalanceElem = document.getElementById('user-balance');
+
+          // Connect to the WebSocket server
+          const connectWebSocket = () => {
+              ws = new WebSocket(wsUrl);
+
+              ws.onopen = () => {
+                  console.log('WebSocket connected.');
+
+                  // Retrieve the stored token from localStorage
+                  const token = localStorage.getItem('deriv_token');
+                  if (token) {
+                      // Send authorization message with token
+                      authorize(token);
+                  } else {
+                      alert('Token not found. Please log in again.');
+                  }
+              };
+
+              ws.onmessage = (message) => {
+                  const response = JSON.parse(message.data);
+                  handleApiResponse(response);
+              };
+
+              ws.onclose = () => {
+                  console.warn('WebSocket closed. Reconnecting...');
+                  setTimeout(connectWebSocket, 1000); // Reconnect on close
+              };
+
+              ws.onerror = (error) => {
+                  console.error('WebSocket error:', error);
+              };
+          };
+
+          // Authorize the user with the token
+          const authorize = (token) => {
+              if (ws.readyState === WebSocket.OPEN) {
+                  ws.send(JSON.stringify({ authorize: token }));
+                  console.log('Authorization request sent.');
+              }
+          };
+
+          // Handle WebSocket responses
+          const handleApiResponse = (response) => {
+              console.log('Response received:', response);
+              if (response.msg_type === 'authorize') {
+                  console.log('Authorization successful.');
+                  getBalance();
+              } else if (response.msg_type === 'balance') {
+                  updateBalance(response.balance);
+              }
+          };
+
+          // Request balance from the server
+          const getBalance = () => {
+              if (ws.readyState === WebSocket.OPEN) {
+                  ws.send(JSON.stringify({ balance: 1 }));
+                  console.log('Balance request sent.');
+              }
+          };
+
+          // Update the balance displayed on the dashboard
+          const updateBalance = (balance) => {
+              if (balance && balance.currency === 'USD') {
+                  userBalanceElem.textContent = ${balance.balance} USD;
+              } else {
+                  console.error('Error: USD balance not found.');
+              }
+          };
+
+          // Initialize WebSocket connection
+          connectWebSocket();
+      });
+    </script>
   </head>
   <body>
     <div class="container">
-      <header>
-        <h1>Welcome to Deriv Analysis Tool</h1>
-        <p>Login to view your account details</p>
-      </header>
-      <main>
-        <div class="login-section">
-          <button id="login-btn" class="button">Login with Deriv</button>
+      <div class="main-content">
+        <!-- Updated First Container -->
+        <div class="section">
+          <!-- Tab Navigation -->
+          <div class="tab-navigation">
+            <button
+              id="real-tab"
+              class="tab real-tab active-tab"
+              aria-selected="true"
+            >
+              Real Account
+            </button>
+            <button id="demo-tab" class="tab demo-tab" aria-selected="false">
+              Demo Account
+            </button>
+          </div>
+
+          <!-- Account Details -->
+          <div class="balance-card" id="balance-card">
+            <h2 id="account-title">Real Account</h2>
+            <p id="account-balance" class="real-text">Balance: Loading...</p>
+            <p id="account-currency" class="real-text">Currency: Loading...</p>
+          </div>
+
+          <!-- Existing Content -->
+          <div class="market-title">DIGITS CURSOR</div>
+          <label for="market">Select Market:</label>
+          <select id="market" class="dropdown">
+            <option value="">Select Market</option>
+            <option value="R_10">Volatility 10 Index</option>
+            <option value="R_25">Volatility 25 Index</option>
+            <option value="R_50">Volatility 50 Index</option>
+            <option value="R_75">Volatility 75 Index</option>
+            <option value="R_100">Volatility 100 Index</option>
+            <option value="1HZ10V">1Hz Volatility 10 Index</option>
+            <option value="1HZ25V">1Hz Volatility 25 Index</option>
+            <option value="1HZ50V">1Hz Volatility 50 Index</option>
+            <option value="1HZ75V">1Hz Volatility 75 Index</option>
+            <option value="1HZ100V">1Hz Volatility 100 Index</option>
+          </select>
+
+          <div id="latest-tick-container">
+            <p id="latest-tick">Latest Tick: --</p>
+            <p id="last-digit">Last Digit: --</p>
+          </div>
+
+          <div id="digit-circle-container" class="digit-circle-container"></div>
         </div>
-      </main>
-      <footer>
-        <p>Powered by Deriv API</p>
-      </footer>
+
+        <!-- Container 2 -->
+        <div class="section">
+          <!-- Container 2 -->
+          <iframe
+            src="https://derivanalysing.com/analysis.html"
+            width="100%"
+            height="400px"
+            style="border: none"
+          ></iframe>
+        </div>
+
+        <!-- Container 3 -->
+        <div class="section">
+          <iframe src="https://app.deriv.com/bot"></iframe>
+        </div>
+      </div>
     </div>
-    <script src="./login.js"></script>
+
+    <script src="./bs.js"></script>
   </body>
 </html>
