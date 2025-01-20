@@ -14,6 +14,12 @@
     <div class="container">
       <h1>Deriv Trading Bot</h1>
 
+      <!-- Trade Status -->
+      <div class="trade-info">
+        <p id="trade-statement">Status: Not started</p>
+        <p id="profit-loss">Profit/Loss: $0.00</p>
+      </div>
+
       <!-- Bot Selection -->
       <label for="bot-select">Select a Bot:</label>
       <select id="bot-select">
@@ -55,12 +61,6 @@
         <button id="start-btn">Start</button>
         <button id="pause-btn" disabled>Pause</button>
         <button id="stop-btn" disabled>Stop</button>
-      </div>
-
-      <!-- Trade Status -->
-      <div class="trade-info">
-        <p id="trade-statement">Status: Not started</p>
-        <p id="profit-loss">Profit/Loss: $0.00</p>
       </div>
 
       <!-- Trade Results Table -->
