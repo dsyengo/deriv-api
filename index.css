@@ -1,0 +1,175 @@
+/* Reset default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Light mode background and text colors */
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: auto; /* Enable scrolling */
+}
+
+/* Container styling */
+.container {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 100%;
+  overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+/* Header styling */
+h1 {
+  text-align: center;
+  color: #ff444f;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Labels and inputs */
+label {
+  font-weight: bold;
+  display: block;
+  margin: 15px 0 5px;
+}
+
+select,
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  font-size: 16px;
+  color: #333;
+}
+
+select {
+  cursor: pointer;
+}
+
+/* Martingale Strategy */
+.martingale-container {
+  margin-top: 15px;
+}
+
+/* Bot buttons styling */
+.bot-actions button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#start-btn {
+  background-color: #ff444f;
+  color: #ffffff;
+}
+
+#start-btn:hover {
+  background-color: #e63946;
+}
+
+#pause-btn {
+  background-color: #ffb400;
+  color: #ffffff;
+}
+
+#pause-btn:hover {
+  background-color: #d39e00;
+}
+
+#stop-btn {
+  background-color: #666;
+  color: #ffffff;
+}
+
+#stop-btn:hover {
+  background-color: #888;
+}
+
+/* Trade Information section */
+.trade-info {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.trade-info p {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+/* Profit/Loss Indicator */
+#profit-loss {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.profit {
+  color: #4caf50; /* Green for profit */
+}
+
+.loss {
+  color: #ff444f; /* Red for loss */
+}
+
+/* Trade Results Table */
+.trade-results {
+  margin-top: 20px;
+}
+
+.trade-results h3 {
+  margin-bottom: 10px;
+}
+
+.trade-results table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.trade-results th,
+.trade-results td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.trade-results th {
+  background-color: #ff444f;
+  color: #fff;
+  font-weight: bold;
+}
+
+.trade-results td {
+  background-color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    max-width: 90%;
+    padding: 20px;
+  }
+}
